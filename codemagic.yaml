@@ -12,7 +12,7 @@ workflows:
       vars:
         XCODE_WORKSPACE: "ios/App/App.xcodeproj"
         XCODE_SCHEME: "App"
-      xcode: 15.0
+      xcode: latest
       cocoapods: default
     scripts:
       - name: Copy web files to www
