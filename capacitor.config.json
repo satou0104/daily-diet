@@ -1,0 +1,6 @@
+{
+  "appId": "com.satou0104.dailydiet",
+  "appName": "日割りダイエット",
+  "webDir": "www",
+  "bundledWebRuntime": false
+}

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>日割りダイエット</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app">
+        <!-- 初回設定画面 -->
+        <div id="setupScreen" class="screen">
+            <div class="setup-wrapper">
+                <div class="setup-container">
+                    <button id="backToCalendar" class="back-btn-outside">カレンダー</button>
+                    <h1>目標設定</h1>
+                
+                    <div class="input-group">
+                        <label>現在体重</label>
+                        <div class="input-wrapper">
+                            <input type="number" id="currentWeight" step="0.1" placeholder="60.0">
+                            <span class="unit">kg</span>
+                        </div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>目標体重</label>
+                        <div class="input-wrapper">
+                            <input type="number" id="targetWeight" step="0.1" placeholder="55.0">
+                            <span class="unit">kg</span>
+                        </div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>達成予定日</label>
+                        <input type="date" id="targetDate">
+                    </div>
+                    
+                    <button id="setupBtn" class="primary-btn">決定</button>
+                    
+                    <p class="note">※ 目標体重と達成予定日は後で変更できます</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- カレンダー画面 -->
+        <div id="calendarScreen" class="screen hidden">
+            <div class="header">
+                <h1>日割りダイエット</h1>
+                <button id="settingsBtn" class="settings-btn">目標体重設定</button>
+            </div>
+            
+            <div class="calendar-header">
+                <button id="prevMonth" class="nav-btn">◀</button>
+                <div class="month-info">
+                    <h2 id="currentMonth"></h2>
+                    <p id="dailyGoal" class="daily-goal"></p>
+                </div>
+                <button id="nextMonth" class="nav-btn">▶</button>
+            </div>
+            
+            <div class="weekdays">
+                <div>日</div>
+                <div>月</div>
+                <div>火</div>
+                <div>水</div>
+                <div>木</div>
+                <div>金</div>
+                <div>土</div>
+            </div>
+            
+            <div id="calendarGrid" class="calendar-grid"></div>
+        </div>
+
+        <!-- 体重入力モーダル -->
+        <div id="weightModal" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 id="modalDate"></h3>
+                    <button id="closeModal" class="close-btn">✕</button>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group">
+                        <label>体重</label>
+                        <div class="input-wrapper">
+                            <input type="number" id="weightInput" step="0.1" placeholder="60.0">
+                            <span class="unit">kg</span>
+                        </div>
+                    </div>
+                    <button id="saveWeight" class="primary-btn">保存</button>
+                    <button id="deleteWeight" class="secondary-btn hidden">削除</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
