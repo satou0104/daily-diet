@@ -10,62 +10,39 @@ workflows:
         distribution_type: app_store
         bundle_identifier: com.satou0104.dailydiet
       vars:
-        XCODE_WORKSPACE: "ios/App/App.xcodeproj"
+        XCODE_PROJECT: "ios/App/App.xcodeproj"
         XCODE_SCHEME: "App"
       xcode: latest
       cocoapods: default
     scripts:
-      - name: Copy web files to www
-        script: |
-          mkdir -p www
-          cp index.html www/
-          cp app.js www/
-          cp style.css www/
       - name: Install npm dependencies
         script: |
           npm install
+      - name: Copy web files to www
+        script: |
+          cp index.html www/
+          cp app.js www/
+          cp style.css www/
       - name: Capacitor sync
         script: |
+          npm install -g @capacitor/cli
           npx cap sync ios
-      - name: Set build number
+      - name: Increment build number
         script: |
           cd ios/App
           agvtool new-version -all $(($(date +%s) / 60))
-      - name: Create export options
+      - name: Set up code signing settings on Xcode project
         script: |
-          cat > /Users/builder/export_options.plist <<EOF
-          <?xml version="1.0" encoding="UTF-8"?>
-          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-          <plist version="1.0">
-          <dict>
-            <key>method</key>
-            <string>app-store</string>
-            <key>teamID</key>
-            <string>\$TEAM_ID</string>
-            <key>uploadBitcode</key>
-            <false/>
-            <key>compileBitcode</key>
-            <false/>
-            <key>uploadSymbols</key>
-            <true/>
-          </dict>
-          </plist>
-          EOF
+          xcode-project use-profiles
       - name: Build ipa for distribution
         script: |
           xcode-project build-ipa \
-            --project "$XCODE_WORKSPACE" \
+            --project "$XCODE_PROJECT" \
             --scheme "$XCODE_SCHEME"
     artifacts:
       - build/ios/ipa/*.ipa
       - /tmp/xcodebuild_logs/*.log
     publishing:
-      email:
-        recipients:
-          - your-email@example.com
-        notify:
-          success: true
-          failure: true
       app_store_connect:
         auth: integration
         submit_to_testflight: true
