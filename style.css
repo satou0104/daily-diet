@@ -57,32 +57,37 @@ body {
 
 .setup-title-row {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     margin-bottom: 40px;
+    position: relative;
+    min-height: 40px;
 }
 
 .setup-title-row h1 {
     font-size: 32px;
     color: #667eea;
     margin: 0;
+    line-height: 1;
 }
 
 .back-btn-outside {
-    background: white;
-    color: #667eea;
-    border: 2px solid #667eea;
-    padding: 8px 16px;
+    position: absolute;
+    right: 0;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 10px 16px;
     border-radius: 20px;
     font-size: 13px;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.2s;
+    line-height: 1;
 }
 
 .back-btn-outside:active {
-    transform: scale(0.95);
-    background: #f0f0ff;
+    transform: scale(0.98);
 }
 
 .setup-container h1 {
@@ -126,6 +131,7 @@ body {
 input[type="number"],
 input[type="date"] {
     width: 100%;
+    height: 56px;
     padding: 15px;
     font-size: 18px;
     border: 2px solid #e0e0e0;
@@ -274,7 +280,7 @@ input[type="date"]:focus {
 }
 
 .day-cell {
-    min-height: 70px;
+    height: 80px;
     display: flex;
     flex-direction: column;
     justify-content: center;
