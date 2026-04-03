@@ -37,6 +37,10 @@ const AppState = {
     },
 
     completeSetup(currentWeight, targetWeight, targetDate) {
+        // 体重を999.99kgまでに制限、小数第2位まで
+        currentWeight = Math.min(999.99, Math.round(currentWeight * 100) / 100);
+        targetWeight = Math.min(999.99, Math.round(targetWeight * 100) / 100);
+        
         this.currentWeight = currentWeight;
         this.targetWeight = targetWeight;
         this.targetDate = targetDate;
@@ -46,10 +50,11 @@ const AppState = {
     },
 
     saveWeight(date, weight) {
-        // 999.99kgまでに制限
+        // 999.99kgまでに制限、小数第2位まで
         if (weight > 999.99) {
             weight = 999.99;
         }
+        weight = Math.round(weight * 100) / 100;
         const key = this.dateToString(date);
         this.weightRecords[key] = weight;
         this.saveToStorage();
