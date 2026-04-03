@@ -274,7 +274,7 @@ input[type="date"]:focus {
 }
 
 .day-cell {
-    min-height: 70px;
+    height: 70px;
     display: flex;
     flex-direction: column;
     justify-content: center;

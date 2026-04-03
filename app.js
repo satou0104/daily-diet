@@ -293,6 +293,19 @@ const AppState = {
                 alert('正しい体重を入力してください');
                 return;
             }
+            
+            if (currentWeight > 999.99 || targetWeight > 999.99) {
+                alert('体重は999.99kg以下で入力してください');
+                return;
+            }
+            
+            // 小数第2位までチェック
+            const currentDecimal = currentWeightValue.split('.')[1];
+            const targetDecimal = targetWeightValue.split('.')[1];
+            if ((currentDecimal && currentDecimal.length > 2) || (targetDecimal && targetDecimal.length > 2)) {
+                alert('小数は第2位までで入力してください');
+                return;
+            }
 
             this.completeSetup(currentWeight, targetWeight, targetDateValue);
         });
@@ -329,12 +342,34 @@ const AppState = {
         });
 
         document.getElementById('saveWeight').addEventListener('click', () => {
-            const weight = parseFloat(document.getElementById('weightInput').value);
-            if (weight && this.selectedDate) {
+            const weightValue = document.getElementById('weightInput').value;
+            if (!weightValue) {
+                alert('体重を入力してください');
+                return;
+            }
+            
+            const weight = parseFloat(weightValue);
+            
+            if (isNaN(weight) || weight <= 0) {
+                alert('正しい体重を入力してください');
+                return;
+            }
+            
+            if (weight > 999.99) {
+                alert('体重は999.99kg以下で入力してください');
+                return;
+            }
+            
+            // 小数第2位までチェック
+            const decimalPart = weightValue.split('.')[1];
+            if (decimalPart && decimalPart.length > 2) {
+                alert('小数は第2位までで入力してください');
+                return;
+            }
+            
+            if (this.selectedDate) {
                 this.saveWeight(this.selectedDate, weight);
                 this.closeWeightModal();
-            } else {
-                alert('体重を入力してください');
             }
         });
 
