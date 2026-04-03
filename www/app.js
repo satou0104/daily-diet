@@ -192,6 +192,15 @@ const AppState = {
         const grid = document.getElementById('calendarGrid');
         grid.innerHTML = '';
 
+        // 曜日ヘッダーを追加
+        const weekdays = ['日', '月', '火', '水', '木', '金', '土'];
+        weekdays.forEach(day => {
+            const weekdayCell = document.createElement('div');
+            weekdayCell.className = 'weekday-header';
+            weekdayCell.textContent = day;
+            grid.appendChild(weekdayCell);
+        });
+
         const year = this.currentMonth.getFullYear();
         const month = this.currentMonth.getMonth();
         const firstDay = new Date(year, month, 1);

@@ -47,11 +47,6 @@
 
         <!-- カレンダー画面 -->
         <div id="calendarScreen" class="screen hidden">
-            <div class="header">
-                <h1>日割りダイエット</h1>
-                <button id="settingsBtn" class="settings-btn">目標体重設定</button>
-            </div>
-            
             <div class="calendar-header">
                 <button id="prevMonth" class="nav-btn">◀</button>
                 <div class="month-info">
@@ -59,19 +54,12 @@
                     <p id="dailyGoal" class="daily-goal"></p>
                 </div>
                 <button id="nextMonth" class="nav-btn">▶</button>
+                <button id="settingsBtn" class="settings-btn-inline">目標体重設定</button>
             </div>
             
-            <div class="weekdays">
-                <div>日</div>
-                <div>月</div>
-                <div>火</div>
-                <div>水</div>
-                <div>木</div>
-                <div>金</div>
-                <div>土</div>
+            <div class="calendar-container">
+                <div id="calendarGrid" class="calendar-grid"></div>
             </div>
-            
-            <div id="calendarGrid" class="calendar-grid"></div>
         </div>
 
         <!-- 体重入力モーダル -->
