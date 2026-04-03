@@ -9,18 +9,33 @@ body {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     min-height: 100vh;
     color: #333;
+    margin: 0;
+    padding: 0;
 }
 
 #app {
     max-width: 600px;
-    margin: 0 auto;
+    width: 100%;
     min-height: 100vh;
+    margin: 0 auto;
 }
 
 .screen {
+    width: 100%;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+}
+
+#setupScreen {
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+#calendarScreen {
+    justify-content: center;
+    align-items: center;
 }
 
 .hidden {
@@ -40,25 +55,39 @@ body {
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
 }
 
+.setup-title-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 40px;
+    position: relative;
+    min-height: 40px;
+}
+
+.setup-title-row h1 {
+    font-size: 32px;
+    color: #667eea;
+    margin: 0;
+    line-height: 1;
+}
+
 .back-btn-outside {
     position: absolute;
-    top: 20px;
-    right: 20px;
-    background: white;
-    color: #667eea;
-    border: 2px solid #667eea;
-    padding: 8px 16px;
+    right: 0;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 10px 16px;
     border-radius: 20px;
     font-size: 13px;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.2s;
-    z-index: 10;
+    line-height: 1;
 }
 
 .back-btn-outside:active {
-    transform: scale(0.95);
-    background: #f0f0ff;
+    transform: scale(0.98);
 }
 
 .setup-container h1 {
@@ -70,6 +99,7 @@ body {
 
 .input-group {
     margin-bottom: 25px;
+    width: 100%;
 }
 
 .input-group label {
@@ -84,6 +114,7 @@ body {
     position: relative;
     display: flex;
     align-items: center;
+    width: 100%;
 }
 
 .input-wrapper input {
@@ -100,11 +131,14 @@ body {
 input[type="number"],
 input[type="date"] {
     width: 100%;
+    height: 56px;
     padding: 15px;
     font-size: 18px;
     border: 2px solid #e0e0e0;
     border-radius: 10px;
     transition: border-color 0.3s;
+    background: white;
+    box-sizing: border-box;
 }
 
 input[type="number"]:focus,
@@ -246,7 +280,7 @@ input[type="date"]:focus {
 }
 
 .day-cell {
-    min-height: 70px;
+    height: 70px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -257,6 +291,7 @@ input[type="date"]:focus {
     cursor: pointer;
     transition: all 0.2s;
     background: white;
+    overflow: hidden;
 }
 
 .day-cell:active {
@@ -279,22 +314,30 @@ input[type="date"]:focus {
 }
 
 .day-number {
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 600;
     color: #333;
 }
 
 .day-weight {
-    font-size: 11px;
+    font-size: 9px;
     color: #667eea;
     margin-top: 2px;
     font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
 }
 
 .day-target {
-    font-size: 9px;
+    font-size: 7px;
     color: #999;
     margin-top: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
 }
 
 /* モーダル */
