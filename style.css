@@ -9,24 +9,33 @@ body {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     min-height: 100vh;
     color: #333;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    margin: 0;
+    padding: 0;
 }
 
 #app {
     max-width: 600px;
     width: 100%;
     min-height: 100vh;
-    display: flex;
-    flex-direction: column;
+    margin: 0 auto;
 }
 
 .screen {
     width: 100%;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
+}
+
+#setupScreen {
     justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+#calendarScreen {
+    justify-content: center;
+    align-items: center;
 }
 
 .hidden {
@@ -85,6 +94,7 @@ body {
 
 .input-group {
     margin-bottom: 25px;
+    width: 100%;
 }
 
 .input-group label {
@@ -99,6 +109,7 @@ body {
     position: relative;
     display: flex;
     align-items: center;
+    width: 100%;
 }
 
 .input-wrapper input {
@@ -121,6 +132,7 @@ input[type="date"] {
     border-radius: 10px;
     transition: border-color 0.3s;
     background: white;
+    box-sizing: border-box;
 }
 
 input[type="number"]:focus,
@@ -273,6 +285,7 @@ input[type="date"]:focus {
     cursor: pointer;
     transition: all 0.2s;
     background: white;
+    overflow: hidden;
 }
 
 .day-cell:active {
@@ -295,22 +308,30 @@ input[type="date"]:focus {
 }
 
 .day-number {
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 600;
     color: #333;
 }
 
 .day-weight {
-    font-size: 11px;
+    font-size: 9px;
     color: #667eea;
     margin-top: 2px;
     font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
 }
 
 .day-target {
-    font-size: 9px;
+    font-size: 7px;
     color: #999;
     margin-top: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
 }
 
 /* モーダル */
