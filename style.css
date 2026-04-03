@@ -179,9 +179,9 @@ input[type="date"]:focus {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px;
+    padding: 20px 15px;
     background: white;
-    margin: 10px;
+    margin: 5px;
     border-radius: 15px;
     gap: 10px;
 }
@@ -248,11 +248,12 @@ input[type="date"]:focus {
 
 .calendar-container {
     background: white;
-    margin: 10px;
+    margin: 5px;
     border-radius: 15px;
-    padding: 10px;
+    padding: 5px;
     max-width: 100%;
-    width: 100%;
+    width: calc(100% - 10px);
+    box-sizing: border-box;
 }
 
 .calendar-grid {
