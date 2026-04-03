@@ -14,7 +14,7 @@ body {
 }
 
 #app {
-    max-width: 100%;
+    max-width: 600px;
     width: 100%;
     min-height: 100vh;
     margin: 0 auto;
@@ -36,7 +36,6 @@ body {
 #calendarScreen {
     justify-content: center;
     align-items: center;
-    padding: 0 5px;
 }
 
 .hidden {
@@ -180,12 +179,11 @@ input[type="date"]:focus {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 15px;
+    padding: 20px;
     background: white;
-    margin: 5px;
+    margin: 10px;
     border-radius: 15px;
     gap: 10px;
-    box-sizing: border-box;
 }
 
 .month-info {
@@ -250,11 +248,10 @@ input[type="date"]:focus {
 
 .calendar-container {
     background: white;
-    margin: 5px;
+    margin: 10px;
     border-radius: 15px;
-    padding: 5px;
+    padding: 10px;
     box-sizing: border-box;
-    overflow: hidden;
 }
 
 .calendar-grid {
