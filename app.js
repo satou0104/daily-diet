@@ -233,7 +233,7 @@ const AppState = {
             if (dailyTarget !== null) {
                 const targetText = document.createElement('div');
                 targetText.className = 'day-target';
-                targetText.textContent = `目標 ${dailyTarget}kg`;
+                targetText.textContent = `目標${dailyTarget}kg`;
                 cell.appendChild(targetText);
             }
 
