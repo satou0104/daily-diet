@@ -9,18 +9,24 @@ body {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     min-height: 100vh;
     color: #333;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 #app {
     max-width: 600px;
-    margin: 0 auto;
-    min-height: 100vh;
-}
-
-.screen {
+    width: 100%;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+}
+
+.screen {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .hidden {
@@ -40,10 +46,20 @@ body {
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
 }
 
+.setup-title-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+}
+
+.setup-title-row h1 {
+    font-size: 32px;
+    color: #667eea;
+    margin: 0;
+}
+
 .back-btn-outside {
-    position: absolute;
-    top: 20px;
-    right: 20px;
     background: white;
     color: #667eea;
     border: 2px solid #667eea;
@@ -53,7 +69,6 @@ body {
     font-weight: 600;
     cursor: pointer;
     transition: all 0.2s;
-    z-index: 10;
 }
 
 .back-btn-outside:active {
@@ -105,6 +120,7 @@ input[type="date"] {
     border: 2px solid #e0e0e0;
     border-radius: 10px;
     transition: border-color 0.3s;
+    background: white;
 }
 
 input[type="number"]:focus,

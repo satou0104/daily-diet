@@ -46,6 +46,10 @@ const AppState = {
     },
 
     saveWeight(date, weight) {
+        // 999.99kgまでに制限
+        if (weight > 999.99) {
+            weight = 999.99;
+        }
         const key = this.dateToString(date);
         this.weightRecords[key] = weight;
         this.saveToStorage();
