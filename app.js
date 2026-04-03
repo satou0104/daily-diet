@@ -280,6 +280,32 @@ const AppState = {
     },
 
     attachEventListeners() {
+        // 体重入力のリアルタイムバリデーション
+        const validateWeightInput = (input) => {
+            input.addEventListener('input', (e) => {
+                let value = e.target.value;
+                
+                // 999.99を超える場合は999.99に制限
+                if (parseFloat(value) > 999.99) {
+                    e.target.value = '999.99';
+                    return;
+                }
+                
+                // 小数点以下の桁数をチェック
+                if (value.includes('.')) {
+                    const parts = value.split('.');
+                    if (parts[1] && parts[1].length > 2) {
+                        e.target.value = parseFloat(value).toFixed(2);
+                    }
+                }
+            });
+        };
+        
+        // すべての体重入力欄にバリデーションを適用
+        validateWeightInput(document.getElementById('currentWeight'));
+        validateWeightInput(document.getElementById('targetWeight'));
+        validateWeightInput(document.getElementById('weightInput'));
+
         // 初回設定
         document.getElementById('setupBtn').addEventListener('click', () => {
             const currentWeightValue = document.getElementById('currentWeight').value;
@@ -296,19 +322,6 @@ const AppState = {
 
             if (isNaN(currentWeight) || isNaN(targetWeight) || currentWeight <= 0 || targetWeight <= 0) {
                 alert('正しい体重を入力してください');
-                return;
-            }
-            
-            if (currentWeight > 999.99 || targetWeight > 999.99) {
-                alert('体重は999.99kg以下で入力してください');
-                return;
-            }
-            
-            // 小数第2位までチェック
-            const currentDecimal = currentWeightValue.split('.')[1];
-            const targetDecimal = targetWeightValue.split('.')[1];
-            if ((currentDecimal && currentDecimal.length > 2) || (targetDecimal && targetDecimal.length > 2)) {
-                alert('小数は第2位までで入力してください');
                 return;
             }
 
@@ -357,18 +370,6 @@ const AppState = {
             
             if (isNaN(weight) || weight <= 0) {
                 alert('正しい体重を入力してください');
-                return;
-            }
-            
-            if (weight > 999.99) {
-                alert('体重は999.99kg以下で入力してください');
-                return;
-            }
-            
-            // 小数第2位までチェック
-            const decimalPart = weightValue.split('.')[1];
-            if (decimalPart && decimalPart.length > 2) {
-                alert('小数は第2位までで入力してください');
                 return;
             }
             

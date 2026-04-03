@@ -37,6 +37,10 @@ const AppState = {
     },
 
     completeSetup(currentWeight, targetWeight, targetDate) {
+        // 体重を999.99kgまでに制限、小数第2位まで
+        currentWeight = Math.min(999.99, Math.round(currentWeight * 100) / 100);
+        targetWeight = Math.min(999.99, Math.round(targetWeight * 100) / 100);
+        
         this.currentWeight = currentWeight;
         this.targetWeight = targetWeight;
         this.targetDate = targetDate;
@@ -46,6 +50,11 @@ const AppState = {
     },
 
     saveWeight(date, weight) {
+        // 999.99kgまでに制限、小数第2位まで
+        if (weight > 999.99) {
+            weight = 999.99;
+        }
+        weight = Math.round(weight * 100) / 100;
         const key = this.dateToString(date);
         this.weightRecords[key] = weight;
         this.saveToStorage();
@@ -229,7 +238,7 @@ const AppState = {
             if (dailyTarget !== null) {
                 const targetText = document.createElement('div');
                 targetText.className = 'day-target';
-                targetText.textContent = `目標 ${dailyTarget}kg`;
+                targetText.textContent = `目標${dailyTarget}kg`;
                 cell.appendChild(targetText);
             }
 
@@ -271,6 +280,32 @@ const AppState = {
     },
 
     attachEventListeners() {
+        // 体重入力のリアルタイムバリデーション
+        const validateWeightInput = (input) => {
+            input.addEventListener('input', (e) => {
+                let value = e.target.value;
+                
+                // 999.99を超える場合は999.99に制限
+                if (parseFloat(value) > 999.99) {
+                    e.target.value = '999.99';
+                    return;
+                }
+                
+                // 小数点以下の桁数をチェック
+                if (value.includes('.')) {
+                    const parts = value.split('.');
+                    if (parts[1] && parts[1].length > 2) {
+                        e.target.value = parseFloat(value).toFixed(2);
+                    }
+                }
+            });
+        };
+        
+        // すべての体重入力欄にバリデーションを適用
+        validateWeightInput(document.getElementById('currentWeight'));
+        validateWeightInput(document.getElementById('targetWeight'));
+        validateWeightInput(document.getElementById('weightInput'));
+
         // 初回設定
         document.getElementById('setupBtn').addEventListener('click', () => {
             const currentWeightValue = document.getElementById('currentWeight').value;
@@ -325,12 +360,22 @@ const AppState = {
         });
 
         document.getElementById('saveWeight').addEventListener('click', () => {
-            const weight = parseFloat(document.getElementById('weightInput').value);
-            if (weight && this.selectedDate) {
+            const weightValue = document.getElementById('weightInput').value;
+            if (!weightValue) {
+                alert('体重を入力してください');
+                return;
+            }
+            
+            const weight = parseFloat(weightValue);
+            
+            if (isNaN(weight) || weight <= 0) {
+                alert('正しい体重を入力してください');
+                return;
+            }
+            
+            if (this.selectedDate) {
                 this.saveWeight(this.selectedDate, weight);
                 this.closeWeightModal();
-            } else {
-                alert('体重を入力してください');
             }
         });
 
