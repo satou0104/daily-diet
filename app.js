@@ -254,6 +254,15 @@ const AppState = {
             cell.addEventListener('click', () => this.openWeightModal(date));
             grid.appendChild(cell);
         }
+
+        // 月末後の空白セル（カレンダーを6行に統一）
+        const totalCells = startDay + daysInMonth;
+        const remainingCells = 42 - totalCells; // 6行 × 7列 = 42セル
+        for (let i = 0; i < remainingCells; i++) {
+            const emptyCell = document.createElement('div');
+            emptyCell.className = 'day-cell empty';
+            grid.appendChild(emptyCell);
+        }
     },
 
     openWeightModal(date) {

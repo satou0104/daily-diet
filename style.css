@@ -14,7 +14,7 @@ body {
 }
 
 #app {
-    max-width: 600px;
+    max-width: 100%;
     width: 100%;
     min-height: 100vh;
     margin: 0 auto;
@@ -34,9 +34,8 @@ body {
 }
 
 #calendarScreen {
-    justify-content: flex-start;
+    justify-content: center;
     align-items: center;
-    padding-top: 10px;
 }
 
 .hidden {
@@ -271,6 +270,7 @@ input[type="date"]:focus {
     font-weight: 400;
     color: #999;
     border-bottom: 1px solid #f0f0f0;
+    border-right: 1px solid #f0f0f0;
 }
 
 .weekdays {
@@ -286,6 +286,7 @@ input[type="date"]:focus {
     padding: 10px 5px;
     border: none;
     border-bottom: 1px solid #f0f0f0;
+    border-right: 1px solid #f0f0f0;
     border-radius: 0;
     cursor: pointer;
     transition: background 0.2s;
@@ -300,7 +301,8 @@ input[type="date"]:focus {
 }
 
 .day-cell.empty {
-    border: none;
+    border-bottom: 1px solid #f0f0f0;
+    border-right: 1px solid #f0f0f0;
     cursor: default;
 }
 
