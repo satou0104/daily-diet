@@ -60,9 +60,8 @@ body {
 .setup-title-row {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
     margin-bottom: 40px;
-    gap: 10px;
 }
 
 .setup-title-row h1 {
@@ -70,7 +69,6 @@ body {
     color: #667eea;
     margin: 0;
     line-height: 1;
-    flex-shrink: 0;
 }
 
 .back-btn-outside {
