@@ -50,9 +50,9 @@ body {
 .setup-container {
     position: relative;
     background: white;
-    border-radius: 20px;
+    border-radius: 30px;
     padding: 40px 25px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
     max-width: 550px;
     width: 100%;
 }
@@ -134,10 +134,10 @@ input[type="date"] {
     height: 56px;
     padding: 15px;
     font-size: 18px;
-    border: 2px solid #e0e0e0;
-    border-radius: 10px;
-    transition: border-color 0.3s;
-    background: white;
+    border: 2px solid #f0f0f0;
+    border-radius: 16px;
+    transition: all 0.3s;
+    background: #fafafa;
     box-sizing: border-box;
     -webkit-appearance: none;
     -moz-appearance: textfield;
@@ -147,6 +147,8 @@ input[type="number"]:focus,
 input[type="date"]:focus {
     outline: none;
     border-color: #667eea;
+    background: white;
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
 }
 
 .primary-btn {
@@ -157,14 +159,16 @@ input[type="date"]:focus {
     color: white;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     border: none;
-    border-radius: 15px;
+    border-radius: 20px;
     cursor: pointer;
-    transition: transform 0.2s, box-shadow 0.2s;
+    transition: all 0.3s;
     margin-top: 10px;
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
 }
 
 .primary-btn:active {
-    transform: scale(0.98);
+    transform: translateY(2px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
 }
 
 .note {
@@ -182,11 +186,12 @@ input[type="date"]:focus {
     padding: 20px;
     background: white;
     margin: 10px;
-    border-radius: 15px;
+    border-radius: 24px;
     gap: 10px;
     width: calc(100% - 20px);
     max-width: 580px;
     box-sizing: border-box;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
 }
 
 .month-info {
@@ -215,18 +220,20 @@ input[type="date"]:focus {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
     border: none;
-    padding: 10px 16px;
-    border-radius: 20px;
+    padding: 12px 20px;
+    border-radius: 24px;
     font-size: 13px;
     font-weight: 600;
     cursor: pointer;
-    transition: transform 0.2s;
+    transition: all 0.3s;
     white-space: nowrap;
     flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
 }
 
 .settings-btn-inline:active {
-    transform: scale(0.98);
+    transform: translateY(2px);
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
 }
 
 .header {
@@ -240,11 +247,12 @@ input[type="date"]:focus {
 .calendar-container {
     background: white;
     margin: 10px;
-    border-radius: 15px;
+    border-radius: 24px;
     padding: 10px;
     box-sizing: border-box;
     width: calc(100% - 20px);
     max-width: 580px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
 }
 
 .calendar-grid {
@@ -279,11 +287,11 @@ input[type="date"]:focus {
     align-items: center;
     padding: 10px 2px;
     border: none;
-    border-bottom: 1px solid #f0f0f0;
-    border-right: 1px solid #f0f0f0;
+    border-bottom: 1px solid #f5f5f5;
+    border-right: 1px solid #f5f5f5;
     border-radius: 0;
     cursor: pointer;
-    transition: background 0.2s;
+    transition: all 0.2s;
     background: transparent;
     overflow: hidden;
     width: 100%;
@@ -291,7 +299,8 @@ input[type="date"]:focus {
 }
 
 .day-cell:active {
-    background: #f5f5f5;
+    background: #f8f9fa;
+    transform: scale(0.98);
 }
 
 .day-cell.empty {
@@ -365,10 +374,10 @@ input[type="date"]:focus {
 
 .modal-content {
     background: white;
-    border-radius: 20px;
+    border-radius: 28px;
     width: 90%;
     max-width: 400px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
 }
 
 .modal-header {
