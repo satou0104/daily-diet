@@ -420,6 +420,41 @@ const AppState = {
                 this.closeWeightModal();
             }
         });
+
+        // カレンダーのスワイプ機能
+        this.addSwipeListeners();
+    },
+
+    addSwipeListeners() {
+        const calendarContainer = document.getElementById('calendarGrid');
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        calendarContainer.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        }, { passive: true });
+
+        calendarContainer.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            this.handleSwipe();
+        }, { passive: true });
+
+        this.handleSwipe = () => {
+            const swipeThreshold = 50; // 最小スワイプ距離
+            const diff = touchStartX - touchEndX;
+
+            if (Math.abs(diff) > swipeThreshold) {
+                if (diff > 0) {
+                    // 左スワイプ - 次の月へ
+                    this.currentMonth = new Date(this.currentMonth.getFullYear(), this.currentMonth.getMonth() + 1);
+                    this.renderCalendar();
+                } else {
+                    // 右スワイプ - 前の月へ
+                    this.currentMonth = new Date(this.currentMonth.getFullYear(), this.currentMonth.getMonth() - 1);
+                    this.renderCalendar();
+                }
+            }
+        };
     }
 };
 
