@@ -269,6 +269,7 @@ const AppState = {
         this.selectedDate = date;
         const modal = document.getElementById('weightModal');
         const modalDate = document.getElementById('modalDate');
+        const modalTargetWeight = document.getElementById('modalTargetWeight');
         const weightInput = document.getElementById('weightInput');
         const deleteBtn = document.getElementById('deleteWeight');
 
@@ -278,6 +279,15 @@ const AppState = {
             day: 'numeric'
         });
         modalDate.textContent = dateStr;
+
+        // 目標体重を表示
+        const dailyTarget = this.calculateDailyTarget(date);
+        if (dailyTarget !== null) {
+            modalTargetWeight.textContent = `目標体重: ${dailyTarget}kg`;
+            modalTargetWeight.style.display = 'block';
+        } else {
+            modalTargetWeight.style.display = 'none';
+        }
 
         const existingWeight = this.getWeight(date);
         if (existingWeight) {

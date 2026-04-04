@@ -408,6 +408,17 @@ input[type="date"]:focus {
     padding: 30px 20px;
 }
 
+.modal-target-weight {
+    text-align: center;
+    font-size: 16px;
+    font-weight: 600;
+    color: #667eea;
+    margin-bottom: 20px;
+    padding: 10px;
+    background: #f0f4ff;
+    border-radius: 10px;
+}
+
 .secondary-btn {
     width: 100%;
     padding: 15px;
