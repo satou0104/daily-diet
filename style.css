@@ -72,7 +72,7 @@ body {
 }
 
 .back-btn-outside {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #81c784 0%, #66bb6a 100%);
     color: white;
     border: none;
     padding: 10px 16px;
@@ -157,7 +157,7 @@ input[type="date"]:focus {
     font-size: 20px;
     font-weight: bold;
     color: white;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #81c784 0%, #66bb6a 100%);
     border: none;
     border-radius: 20px;
     cursor: pointer;
@@ -215,7 +215,7 @@ input[type="date"]:focus {
 }
 
 .settings-btn-inline {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #81c784 0%, #66bb6a 100%);
     color: white;
     border: none;
     padding: 12px 20px;
