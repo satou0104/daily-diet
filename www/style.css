@@ -330,7 +330,7 @@ input[type="date"]:focus {
 
 .day-weight {
     font-size: 10px;
-    color: #999;
+    color: #333;
     margin-top: 2px;
     font-weight: 400;
     white-space: nowrap;
@@ -341,7 +341,7 @@ input[type="date"]:focus {
 
 .day-target {
     font-size: 10px;
-    color: #999;
+    color: #333;
     margin-top: 2px;
     font-weight: 400;
     white-space: nowrap;
