@@ -229,6 +229,14 @@ const AppState = {
             const weight = this.getWeight(date);
             const dailyTarget = this.calculateDailyTarget(date);
 
+            // 目標体重を先に表示
+            if (dailyTarget !== null) {
+                const targetText = document.createElement('div');
+                targetText.className = 'day-target';
+                targetText.textContent = `目:${dailyTarget}kg`;
+                cell.appendChild(targetText);
+            }
+
             if (weight) {
                 cell.classList.add('has-weight');
                 
@@ -241,14 +249,6 @@ const AppState = {
                 weightText.className = 'day-weight actual';
                 weightText.textContent = `現:${weight}kg`;
                 cell.appendChild(weightText);
-            }
-
-            // 目標体重を表示
-            if (dailyTarget !== null) {
-                const targetText = document.createElement('div');
-                targetText.className = 'day-target';
-                targetText.textContent = `目:${dailyTarget}kg`;
-                cell.appendChild(targetText);
             }
 
             cell.addEventListener('click', () => this.openWeightModal(date));
