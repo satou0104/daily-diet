@@ -245,7 +245,7 @@ const AppState = {
             if (dailyTarget !== null) {
                 const targetText = document.createElement('div');
                 targetText.className = 'day-target';
-                targetText.textContent = `目:${dailyTarget}kg`;
+                targetText.textContent = `目${dailyTarget}kg`;
                 cell.appendChild(targetText);
             }
 
@@ -259,7 +259,7 @@ const AppState = {
                 
                 const weightText = document.createElement('div');
                 weightText.className = 'day-weight actual';
-                weightText.textContent = `現:${weight}kg`;
+                weightText.textContent = `現${weight}kg`;
                 cell.appendChild(weightText);
             }
 
