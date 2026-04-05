@@ -1,5 +1,46 @@
-node_modules/
+# OS generated files
 .DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+
+# Logs
 *.log
+npm-debug.log*
+
+# Temporary files
+*.tmp
+*.temp
+
+# Node
+node_modules/
+
+# Capacitor
+.capacitor/
+
+# iOS
 ios/App/Pods/
 ios/App/App.xcworkspace/xcuserdata/
+ios/App/build/
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# Xcode
+xcuserdata/
+DerivedData/
+
+# 証明書と秘密鍵（絶対にコミットしない）
+*.key
+*.p12
+*.pem
+*.certSigningRequest
+*.cer
+*.mobileprovision
