@@ -54,11 +54,49 @@
                     <p id="dailyGoal" class="daily-goal"></p>
                 </div>
                 <button id="nextMonth" class="nav-btn">▶</button>
-                <button id="settingsBtn" class="settings-btn-inline">目標体重設定</button>
+                <button id="settingsBtn" class="settings-btn-inline">⚙</button>
             </div>
             
             <div class="calendar-container">
                 <div id="calendarGrid" class="calendar-grid"></div>
+            </div>
+        </div>
+
+        <!-- 設定メニューモーダル -->
+        <div id="settingsModal" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>設定</h3>
+                    <button id="closeSettings" class="close-btn">✕</button>
+                </div>
+                <div class="modal-body">
+                    <button id="goToTargetSettings" class="primary-btn">目標体重設定</button>
+                    <button id="showHelp" class="primary-btn" style="margin-top: 15px;">操作説明</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 操作説明モーダル -->
+        <div id="helpModal" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>操作説明</h3>
+                    <button id="closeHelp" class="close-btn">✕</button>
+                </div>
+                <div class="modal-body">
+                    <div class="help-content">
+                        <p>日割りダイエットは、目標体重までの減量を日割りで管理するアプリです。</p>
+                        <br>
+                        <p><strong>カレンダーの色について：</strong></p>
+                        <ul>
+                            <li>🟦 <strong>青色</strong>：体重を入力して目標達成した日</li>
+                            <li>🟥 <strong>赤色</strong>：体重を入力したが目標未達成の日</li>
+                            <li>🟨 <strong>黄色</strong>：目標達成予定日</li>
+                        </ul>
+                        <br>
+                        <p>日付をタップして毎日の体重を記録しましょう！</p>
+                    </div>
+                </div>
             </div>
         </div>
 

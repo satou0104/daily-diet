@@ -379,13 +379,48 @@ const AppState = {
             this.renderCalendar();
         });
 
-        // 設定ボタン
+        // 設定ボタン - 設定モーダルを開く
         document.getElementById('settingsBtn').addEventListener('click', () => {
+            document.getElementById('settingsModal').classList.remove('hidden');
+        });
+
+        // 設定モーダルを閉じる
+        document.getElementById('closeSettings').addEventListener('click', () => {
+            document.getElementById('settingsModal').classList.add('hidden');
+        });
+
+        // 目標体重設定ボタン
+        document.getElementById('goToTargetSettings').addEventListener('click', () => {
+            document.getElementById('settingsModal').classList.add('hidden');
             this.isFirstLaunch = true;
             document.getElementById('currentWeight').value = this.currentWeight;
             document.getElementById('targetWeight').value = this.targetWeight;
             document.getElementById('targetDate').value = this.targetDate;
             this.render();
+        });
+
+        // 操作説明ボタン
+        document.getElementById('showHelp').addEventListener('click', () => {
+            document.getElementById('settingsModal').classList.add('hidden');
+            document.getElementById('helpModal').classList.remove('hidden');
+        });
+
+        // 操作説明モーダルを閉じる
+        document.getElementById('closeHelp').addEventListener('click', () => {
+            document.getElementById('helpModal').classList.add('hidden');
+        });
+
+        // モーダル背景クリックで閉じる
+        document.getElementById('settingsModal').addEventListener('click', (e) => {
+            if (e.target.id === 'settingsModal') {
+                document.getElementById('settingsModal').classList.add('hidden');
+            }
+        });
+
+        document.getElementById('helpModal').addEventListener('click', (e) => {
+            if (e.target.id === 'helpModal') {
+                document.getElementById('helpModal').classList.add('hidden');
+            }
         });
 
         // カレンダーに戻るボタン

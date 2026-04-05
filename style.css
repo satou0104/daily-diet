@@ -215,21 +215,18 @@ input[type="date"]:focus {
 }
 
 .settings-btn-inline {
-    background: linear-gradient(135deg, #81c784 0%, #66bb6a 100%);
-    color: white;
+    background: none;
     border: none;
-    padding: 12px 20px;
-    border-radius: 24px;
-    font-size: 13px;
-    font-weight: 600;
+    font-size: 24px;
     cursor: pointer;
-    transition: all 0.3s;
-    white-space: nowrap;
+    transition: all 0.2s;
+    color: #666;
+    padding: 0;
     flex-shrink: 0;
 }
 
 .settings-btn-inline:active {
-    transform: translateY(2px);
+    transform: scale(0.9);
 }
 
 .header {
@@ -437,4 +434,22 @@ input[type="date"]:focus {
 
 .secondary-btn:active {
     background: #fff5f5;
+}
+
+.help-content {
+    line-height: 1.8;
+}
+
+.help-content p {
+    margin-bottom: 10px;
+}
+
+.help-content ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.help-content li {
+    margin-bottom: 10px;
+    padding-left: 5px;
 }
