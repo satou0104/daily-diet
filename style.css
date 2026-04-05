@@ -309,6 +309,10 @@ input[type="date"]:focus {
     cursor: default;
 }
 
+.day-cell.target-date {
+    background: #fff9c4;
+}
+
 .day-cell.has-weight {
     background: #e3f2fd;
 }

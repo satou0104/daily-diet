@@ -221,6 +221,18 @@ const AppState = {
             const cell = document.createElement('div');
             cell.className = 'day-cell';
             
+            // 目標達成予定日かチェック
+            if (this.targetDate) {
+                const targetDate = new Date(this.targetDate);
+                targetDate.setHours(0, 0, 0, 0);
+                const currentDate = new Date(date);
+                currentDate.setHours(0, 0, 0, 0);
+                
+                if (currentDate.getTime() === targetDate.getTime()) {
+                    cell.classList.add('target-date');
+                }
+            }
+            
             const dayNumber = document.createElement('div');
             dayNumber.className = 'day-number';
             dayNumber.textContent = day;
