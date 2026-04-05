@@ -330,28 +330,24 @@ input[type="date"]:focus {
 
 .day-weight {
     font-size: 10px;
-    color: #667eea;
+    color: #999;
     margin-top: 2px;
-    font-weight: 600;
+    font-weight: 400;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     max-width: 100%;
-}
-
-.day-cell.over-target .day-weight {
-    color: #ff4444;
 }
 
 .day-target {
-    font-size: 9px;
+    font-size: 10px;
     color: #999;
     margin-top: 2px;
+    font-weight: 400;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     max-width: 100%;
-    word-break: break-all;
 }
 
 /* モーダル */
