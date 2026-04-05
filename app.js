@@ -3,6 +3,7 @@ const AppState = {
     isFirstLaunch: true,
     currentWeight: 0,
     targetWeight: 0,
+    startDate: null,
     targetDate: null,
     weightRecords: {},
     currentMonth: new Date(),
@@ -21,6 +22,7 @@ const AppState = {
         if (!this.isFirstLaunch) {
             this.currentWeight = parseFloat(localStorage.getItem('currentWeight')) || 0;
             this.targetWeight = parseFloat(localStorage.getItem('targetWeight')) || 0;
+            this.startDate = localStorage.getItem('startDate');
             this.targetDate = localStorage.getItem('targetDate');
             
             const records = localStorage.getItem('weightRecords');
@@ -32,17 +34,19 @@ const AppState = {
         localStorage.setItem('hasLaunched', 'true');
         localStorage.setItem('currentWeight', this.currentWeight);
         localStorage.setItem('targetWeight', this.targetWeight);
+        localStorage.setItem('startDate', this.startDate);
         localStorage.setItem('targetDate', this.targetDate);
         localStorage.setItem('weightRecords', JSON.stringify(this.weightRecords));
     },
 
-    completeSetup(currentWeight, targetWeight, targetDate) {
+    completeSetup(currentWeight, targetWeight, startDate, targetDate) {
         // 体重を999.99kgまでに制限、小数第2位まで
         currentWeight = Math.min(999.99, Math.round(currentWeight * 100) / 100);
         targetWeight = Math.min(999.99, Math.round(targetWeight * 100) / 100);
         
         this.currentWeight = currentWeight;
         this.targetWeight = targetWeight;
+        this.startDate = startDate;
         this.targetDate = targetDate;
         this.isFirstLaunch = false;
         this.saveToStorage();
@@ -82,11 +86,11 @@ const AppState = {
 
     // 日割り目標体重を計算
     calculateDailyTarget(date) {
-        if (!this.targetDate || !this.currentWeight || !this.targetWeight) {
+        if (!this.startDate || !this.targetDate || !this.currentWeight || !this.targetWeight) {
             return null;
         }
 
-        const startDate = new Date();
+        const startDate = new Date(this.startDate);
         startDate.setHours(0, 0, 0, 0);
         
         const endDate = new Date(this.targetDate);
@@ -95,7 +99,7 @@ const AppState = {
         const targetDate = new Date(date);
         targetDate.setHours(0, 0, 0, 0);
 
-        // 達成予定日を過ぎている場合はnullを返す（表示しない）
+        // 終了日を過ぎている場合はnullを返す（表示しない）
         if (targetDate > endDate) {
             return null;
         }
@@ -127,13 +131,13 @@ const AppState = {
         return Math.round(dailyTarget * 100) / 100; // 小数第2位まで
     },
 
-    // 1日あたりの減量目標を計算（グラム）
+    // 1日あたりの減量目標を計算（kg）
     calculateDailyGoal() {
-        if (!this.targetDate || !this.currentWeight || !this.targetWeight) {
+        if (!this.startDate || !this.targetDate || !this.currentWeight || !this.targetWeight) {
             return null;
         }
 
-        const startDate = new Date();
+        const startDate = new Date(this.startDate);
         startDate.setHours(0, 0, 0, 0);
         
         const endDate = new Date(this.targetDate);
@@ -145,8 +149,8 @@ const AppState = {
             return null;
         }
 
-        const totalDiff = (this.currentWeight - this.targetWeight) * 1000;
-        const dailyDiff = Math.round(totalDiff / totalDays * 10) / 10;
+        const totalDiff = this.currentWeight - this.targetWeight;
+        const dailyDiff = Math.round(totalDiff / totalDays * 100) / 100;
 
         return dailyDiff;
     },
@@ -169,8 +173,10 @@ const AppState = {
     setDefaultTargetDate() {
         const today = new Date();
         const nextMonth = new Date(today.getFullYear(), today.getMonth() + 1, today.getDate());
-        const dateStr = this.dateToString(nextMonth);
-        document.getElementById('targetDate').value = dateStr;
+        const todayStr = this.dateToString(today);
+        const nextMonthStr = this.dateToString(nextMonth);
+        document.getElementById('startDate').value = todayStr;
+        document.getElementById('targetDate').value = nextMonthStr;
     },
 
     renderCalendar() {
@@ -184,7 +190,7 @@ const AppState = {
         const dailyGoalElement = document.getElementById('dailyGoal');
         const dailyGoal = this.calculateDailyGoal();
         if (dailyGoal !== null) {
-            dailyGoalElement.textContent = `1日あたりの減量目標 ${dailyGoal}g`;
+            dailyGoalElement.textContent = `1日あたりの減量目標 ${dailyGoal}kg`;
         } else {
             dailyGoalElement.textContent = '';
         }
@@ -350,9 +356,10 @@ const AppState = {
         document.getElementById('setupBtn').addEventListener('click', () => {
             const currentWeightValue = document.getElementById('currentWeight').value;
             const targetWeightValue = document.getElementById('targetWeight').value;
+            const startDateValue = document.getElementById('startDate').value;
             const targetDateValue = document.getElementById('targetDate').value;
 
-            if (!currentWeightValue || !targetWeightValue || !targetDateValue) {
+            if (!currentWeightValue || !targetWeightValue || !startDateValue || !targetDateValue) {
                 alert('すべての項目を入力してください');
                 return;
             }
@@ -365,7 +372,7 @@ const AppState = {
                 return;
             }
 
-            this.completeSetup(currentWeight, targetWeight, targetDateValue);
+            this.completeSetup(currentWeight, targetWeight, startDateValue, targetDateValue);
         });
 
         // カレンダーナビゲーション
@@ -395,6 +402,7 @@ const AppState = {
             this.isFirstLaunch = true;
             document.getElementById('currentWeight').value = this.currentWeight;
             document.getElementById('targetWeight').value = this.targetWeight;
+            document.getElementById('startDate').value = this.startDate;
             document.getElementById('targetDate').value = this.targetDate;
             this.render();
         });
