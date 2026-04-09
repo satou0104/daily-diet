@@ -684,16 +684,6 @@ const AppState = {
                     ctx.fill();
                 }
             });
-
-            // 最後のデータラベル
-            if (li >= 0) {
-                const ld = dataPoints[li];
-                const dateStr = `${ld.date.getMonth()+1}/${ld.date.getDate()} ${weekdays[ld.date.getDay()]}${ld.weight}kg`;
-                ctx.fillStyle = '#555';
-                ctx.font = '11px sans-serif';
-                ctx.textAlign = 'right';
-                ctx.fillText(dateStr, width - padRight, toY(ld.weight) - 8);
-            }
         }
     },
 
