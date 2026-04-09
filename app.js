@@ -281,6 +281,9 @@ const AppState = {
             emptyCell.className = 'day-cell empty';
             grid.appendChild(emptyCell);
         }
+
+        // グラフを描画
+        setTimeout(() => this.renderChart(this.chartDays || 7), 50);
     },
 
     openWeightModal(date) {
@@ -478,6 +481,210 @@ const AppState = {
 
         // カレンダーのスワイプ機能
         this.addSwipeListeners();
+
+        // グラフ切り替えボタン
+        this.chartDays = 7;
+        document.getElementById('chart7days').addEventListener('click', () => {
+            this.chartDays = 7;
+            document.getElementById('chart7days').classList.add('active');
+            document.getElementById('chart30days').classList.remove('active');
+            this.renderChart(7);
+        });
+        document.getElementById('chart30days').addEventListener('click', () => {
+            this.chartDays = 30;
+            document.getElementById('chart30days').classList.add('active');
+            document.getElementById('chart7days').classList.remove('active');
+            this.renderChart(30);
+        });
+    },
+
+    renderChart(days = 7) {
+        const canvas = document.getElementById('weightChart');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+
+        // canvas解像度をデバイスピクセル比に合わせる
+        const dpr = window.devicePixelRatio || 1;
+        const rect = canvas.parentElement.getBoundingClientRect();
+        const width = rect.width - 30;
+        const height = 180;
+        canvas.width = width * dpr;
+        canvas.height = height * dpr;
+        canvas.style.width = width + 'px';
+        canvas.style.height = height + 'px';
+        ctx.scale(dpr, dpr);
+
+        // 過去N日分のデータを収集
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const dataPoints = [];
+
+        for (let i = days - 1; i >= 0; i--) {
+            const date = new Date(today);
+            date.setDate(today.getDate() - i);
+            const weight = this.getWeight(date);
+            const target = this.calculateDailyTarget(date);
+            dataPoints.push({ date, weight, target });
+        }
+
+        // グラフ情報を更新（日付範囲表示）
+        const chartInfo = document.getElementById('chartInfo');
+        const firstDate = dataPoints[0].date;
+        const lastDate = dataPoints[dataPoints.length - 1].date;
+        const firstStr = `${firstDate.getMonth()+1}/${firstDate.getDate()}`;
+        const lastStr = `${lastDate.getMonth()+1}/${lastDate.getDate()}`;
+        chartInfo.innerHTML = `${firstStr}～${lastStr}`;
+
+        // Y軸の範囲を計算（体重データのみ基準、目標体重は参考程度）
+        const allWeights = dataPoints.filter(d => d.weight).map(d => d.weight);
+        const allTargets = dataPoints.filter(d => d.target !== null).map(d => d.target);
+        if (allWeights.length === 0 && allTargets.length === 0) {
+            ctx.fillStyle = '#ccc';
+            ctx.font = '14px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('体重を入力するとグラフが表示されます', width / 2, height / 2);
+            return;
+        }
+        const baseValues = allWeights.length > 0 ? allWeights : allTargets;
+        const allValues = [...allWeights, ...allTargets];
+        const minVal = Math.min(...baseValues) - 1;
+        const maxVal = Math.max(...baseValues) + 1;
+        const range = maxVal - minVal || 1;
+
+        // パディング
+        const padLeft = 40;
+        const padRight = 15;
+        const padTop = 15;
+        const padBottom = 30;
+        const chartW = width - padLeft - padRight;
+        const chartH = height - padTop - padBottom;
+
+        const xStep = chartW / (days - 1);
+        const toY = val => padTop + chartH - ((val - minVal) / range) * chartH;
+        const toX = i => padLeft + i * xStep;
+
+        // グリッド線とY軸ラベル（最大5本、0.5単位に丸める）
+        ctx.strokeStyle = '#f0f0f0';
+        ctx.lineWidth = 1;
+        const tickMin = Math.floor(minVal * 2) / 2;
+        const tickMax = Math.ceil(maxVal * 2) / 2;
+        // 範囲に応じてステップを決定
+        const rawRange = tickMax - tickMin;
+        let step = 0.5;
+        if (rawRange > 4) step = 1;
+        if (rawRange > 8) step = 2;
+        const ticks = [];
+        for (let v = tickMin; v <= tickMax + 0.01; v += step) {
+            ticks.push(Math.round(v * 10) / 10);
+        }
+        ticks.forEach(val => {
+            const y = toY(val);
+            if (y < padTop || y > height - padBottom) return;
+            ctx.beginPath();
+            ctx.moveTo(padLeft, y);
+            ctx.lineTo(width - padRight, y);
+            ctx.stroke();
+            ctx.fillStyle = '#aaa';
+            ctx.font = '10px sans-serif';
+            ctx.textAlign = 'right';
+            ctx.fillText(val.toFixed(1), padLeft - 4, y + 4);
+        });
+
+        // X軸ラベル（曜日）
+        const weekdays = ['日','月','火','水','木','金','土'];
+        ctx.fillStyle = '#aaa';
+        ctx.font = '10px sans-serif';
+        ctx.textAlign = 'center';
+        dataPoints.forEach((d, i) => {
+            if (days <= 7 || i % Math.ceil(days / 7) === 0) {
+                ctx.fillText(weekdays[d.date.getDay()], toX(i), height - padBottom + 14);
+            }
+        });
+
+        // 目標体重ライン（緑点線）
+        const targetPoints = dataPoints.filter(d => d.target !== null);
+        if (targetPoints.length > 1) {
+            ctx.beginPath();
+            ctx.strokeStyle = '#81c784';
+            ctx.lineWidth = 1.5;
+            ctx.setLineDash([5, 4]);
+            dataPoints.forEach((d, i) => {
+                if (d.target !== null) {
+                    if (ctx.currentX === undefined) ctx.moveTo(toX(i), toY(d.target));
+                    else ctx.lineTo(toX(i), toY(d.target));
+                    ctx.currentX = i;
+                }
+            });
+            // 再描画
+            ctx.beginPath();
+            let first = true;
+            dataPoints.forEach((d, i) => {
+                if (d.target !== null) {
+                    if (first) { ctx.moveTo(toX(i), toY(d.target)); first = false; }
+                    else ctx.lineTo(toX(i), toY(d.target));
+                }
+            });
+            ctx.stroke();
+            ctx.setLineDash([]);
+        }
+
+        // 実際の体重ライン（青実線）+ 塗りつぶし
+        const weightPoints = dataPoints.filter(d => d.weight);
+        if (weightPoints.length > 0) {
+            // 塗りつぶし
+            ctx.beginPath();
+            let firstIdx = dataPoints.findIndex(d => d.weight);
+            ctx.moveTo(toX(firstIdx), toY(dataPoints[firstIdx].weight));
+            dataPoints.forEach((d, i) => {
+                if (d.weight) ctx.lineTo(toX(i), toY(d.weight));
+            });
+            const lastIdx = dataPoints.map(d => d.weight).lastIndexOf(dataPoints.filter(d=>d.weight).slice(-1)[0]?.weight);
+            let li = -1;
+            for (let i = dataPoints.length - 1; i >= 0; i--) {
+                if (dataPoints[i].weight) { li = i; break; }
+            }
+            if (li >= 0) {
+                ctx.lineTo(toX(li), height - padBottom);
+                ctx.lineTo(toX(firstIdx), height - padBottom);
+            }
+            ctx.closePath();
+            ctx.fillStyle = 'rgba(100, 181, 246, 0.15)';
+            ctx.fill();
+
+            // 実線
+            ctx.beginPath();
+            ctx.strokeStyle = '#64b5f6';
+            ctx.lineWidth = 2;
+            let firstPoint = true;
+            dataPoints.forEach((d, i) => {
+                if (d.weight) {
+                    if (firstPoint) { ctx.moveTo(toX(i), toY(d.weight)); firstPoint = false; }
+                    else ctx.lineTo(toX(i), toY(d.weight));
+                }
+            });
+            ctx.stroke();
+
+            // ドット
+            dataPoints.forEach((d, i) => {
+                if (d.weight) {
+                    const isLast = i === dataPoints.map((x,j)=>x.weight?j:-1).filter(j=>j>=0).slice(-1)[0];
+                    ctx.beginPath();
+                    ctx.arc(toX(i), toY(d.weight), isLast ? 5 : 4, 0, Math.PI * 2);
+                    ctx.fillStyle = isLast ? '#81c784' : '#64b5f6';
+                    ctx.fill();
+                }
+            });
+
+            // 最後のデータラベル
+            if (li >= 0) {
+                const ld = dataPoints[li];
+                const dateStr = `${ld.date.getMonth()+1}/${ld.date.getDate()} ${weekdays[ld.date.getDay()]}${ld.weight}kg`;
+                ctx.fillStyle = '#555';
+                ctx.font = '11px sans-serif';
+                ctx.textAlign = 'right';
+                ctx.fillText(dateStr, width - padRight, toY(ld.weight) - 8);
+            }
+        }
     },
 
     addSwipeListeners() {
