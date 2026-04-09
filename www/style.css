@@ -11,6 +11,8 @@ body {
     color: #333;
     margin: 0;
     padding: 0;
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
 }
 
 #app {
@@ -34,8 +36,10 @@ body {
 }
 
 #calendarScreen {
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
+    padding-top: 15px;
+    padding-bottom: 60px;
 }
 
 .hidden {
@@ -250,6 +254,7 @@ input[type="date"]:focus {
     width: calc(100% - 20px);
     max-width: 580px;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
 }
 
 .calendar-grid {

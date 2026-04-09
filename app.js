@@ -698,35 +698,54 @@ const AppState = {
     },
 
     addSwipeListeners() {
-        const calendarContainer = document.getElementById('calendarGrid');
+        const container = document.querySelector('.calendar-container');
         let touchStartX = 0;
-        let touchEndX = 0;
+        let touchCurrentX = 0;
+        let isSwiping = false;
 
-        calendarContainer.addEventListener('touchstart', (e) => {
+        container.addEventListener('touchstart', (e) => {
             touchStartX = e.changedTouches[0].screenX;
+            touchCurrentX = touchStartX;
+            isSwiping = true;
+            container.style.transition = 'none';
         }, { passive: true });
 
-        calendarContainer.addEventListener('touchend', (e) => {
-            touchEndX = e.changedTouches[0].screenX;
-            this.handleSwipe();
+        container.addEventListener('touchmove', (e) => {
+            if (!isSwiping) return;
+            touchCurrentX = e.changedTouches[0].screenX;
+            const diff = touchCurrentX - touchStartX;
+            container.style.transform = `translateX(${diff * 0.3}px)`;
         }, { passive: true });
 
-        this.handleSwipe = () => {
-            const swipeThreshold = 50; // 最小スワイプ距離
-            const diff = touchStartX - touchEndX;
+        container.addEventListener('touchend', (e) => {
+            if (!isSwiping) return;
+            isSwiping = false;
+            const diff = touchStartX - touchCurrentX;
+            const swipeThreshold = 40;
+
+            container.style.transition = 'transform 0.25s ease';
 
             if (Math.abs(diff) > swipeThreshold) {
-                if (diff > 0) {
-                    // 左スワイプ - 次の月へ
-                    this.currentMonth = new Date(this.currentMonth.getFullYear(), this.currentMonth.getMonth() + 1);
+                const direction = diff > 0 ? 1 : -1;
+                container.style.transform = `translateX(${-direction * 100}px)`;
+                setTimeout(() => {
+                    if (direction > 0) {
+                        this.currentMonth = new Date(this.currentMonth.getFullYear(), this.currentMonth.getMonth() + 1);
+                    } else {
+                        this.currentMonth = new Date(this.currentMonth.getFullYear(), this.currentMonth.getMonth() - 1);
+                    }
+                    container.style.transition = 'none';
+                    container.style.transform = `translateX(${direction * 100}px)`;
                     this.renderCalendar();
-                } else {
-                    // 右スワイプ - 前の月へ
-                    this.currentMonth = new Date(this.currentMonth.getFullYear(), this.currentMonth.getMonth() - 1);
-                    this.renderCalendar();
-                }
+                    requestAnimationFrame(() => {
+                        container.style.transition = 'transform 0.25s ease';
+                        container.style.transform = 'translateX(0)';
+                    });
+                }, 150);
+            } else {
+                container.style.transform = 'translateX(0)';
             }
-        };
+        }, { passive: true });
     }
 };
 
@@ -737,20 +756,24 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 async function initAdMob() {
-    if (!window.Capacitor || !window.Capacitor.isNativePlatform()) return;
+    try {
+        if (!window.Capacitor || !window.Capacitor.isNativePlatform()) return;
 
-    const { AdMob } = Capacitor.Plugins;
-    if (!AdMob) return;
+        const { AdMob } = Capacitor.Plugins;
+        if (!AdMob) return;
 
-    await AdMob.initialize({
-        requestTrackingAuthorization: true,
-    });
+        await AdMob.initialize({
+            requestTrackingAuthorization: true,
+        });
 
-    await AdMob.showBanner({
-        adId: 'ca-app-pub-8707369701475326/7496865188',
-        adSize: 'BANNER',
-        position: 'BOTTOM_CENTER',
-        margin: 0,
-        isTesting: false,
-    });
+        await AdMob.showBanner({
+            adId: 'ca-app-pub-8707369701475326/7496865188',
+            adSize: 'BANNER',
+            position: 'BOTTOM_CENTER',
+            margin: 0,
+            isTesting: false,
+        });
+    } catch (e) {
+        console.error('AdMob error:', e);
+    }
 }
