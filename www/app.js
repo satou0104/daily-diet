@@ -514,14 +514,24 @@ const AppState = {
         canvas.style.height = height + 'px';
         ctx.scale(dpr, dpr);
 
-        // 過去N日分のデータを収集
+        // 開始日を基準にデータを収集
         const today = new Date();
         today.setHours(0, 0, 0, 0);
         const dataPoints = [];
 
-        for (let i = days - 1; i >= 0; i--) {
-            const date = new Date(today);
-            date.setDate(today.getDate() - i);
+        // 開始日が設定されていればそこから、なければ今日から過去N日
+        let startBase;
+        if (this.startDate) {
+            startBase = new Date(this.startDate);
+            startBase.setHours(0, 0, 0, 0);
+        } else {
+            startBase = new Date(today);
+            startBase.setDate(today.getDate() - (days - 1));
+        }
+
+        for (let i = 0; i < days; i++) {
+            const date = new Date(startBase);
+            date.setDate(startBase.getDate() + i);
             const weight = this.getWeight(date);
             const target = this.calculateDailyTarget(date);
             dataPoints.push({ date, weight, target });
