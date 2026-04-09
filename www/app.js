@@ -516,4 +516,24 @@ const AppState = {
 // アプリ起動
 document.addEventListener('DOMContentLoaded', () => {
     AppState.init();
+    initAdMob();
 });
+
+async function initAdMob() {
+    if (!window.Capacitor || !window.Capacitor.isNativePlatform()) return;
+
+    const { AdMob } = Capacitor.Plugins;
+    if (!AdMob) return;
+
+    await AdMob.initialize({
+        requestTrackingAuthorization: true,
+    });
+
+    await AdMob.showBanner({
+        adId: 'ca-app-pub-8707369701475326/7496865188',
+        adSize: 'BANNER',
+        position: 'BOTTOM_CENTER',
+        margin: 0,
+        isTesting: false,
+    });
+}
