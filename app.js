@@ -298,11 +298,9 @@ const AppState = {
     },
 
     updateDolphin() {
-        const container = document.querySelector('.dolphin-container');
         const emoji = document.getElementById('dolphinEmoji');
-        const status = document.getElementById('dolphinStatus');
-        const message = document.getElementById('dolphinMessage');
-        if (!container || !emoji || !status || !message) return;
+        const statusEl = document.getElementById('dolphinStatus');
+        if (!emoji) return;
 
         // 直近の連続達成/失敗日数を計算
         const today = new Date();
@@ -330,40 +328,23 @@ const AppState = {
             }
         }
 
-        // 目標までの残り体重
-        let remaining = '';
-        if (this.targetWeight && this.currentWeight) {
-            const lastWeight = this.getLatestWeight() || this.currentWeight;
-            const diff = (lastWeight - this.targetWeight).toFixed(1);
-            remaining = `目標まであと -${diff}kg`;
-        }
-
-        // SVGイルカ生成関数
-        // PNG画像でイルカ表示
-        container.className = 'dolphin-container';
+        // 状態を決定
         if (streakType === 'success' && streak >= 7) {
             emoji.innerHTML = '<img src="絶好調.png" alt="絶好調">';
-            status.textContent = '絶好調です！';
-            container.classList.add('status-great');
+            if (statusEl) statusEl.textContent = '絶好調です！✨';
         } else if (streakType === 'success' && streak >= 3) {
             emoji.innerHTML = '<img src="好調.png" alt="好調">';
-            status.textContent = '好調です！';
-            container.classList.add('status-good');
+            if (statusEl) statusEl.textContent = '好調です！';
         } else if (streakType === 'fail' && streak >= 7) {
             emoji.innerHTML = '<img src="絶不調.png" alt="絶不調">';
-            status.textContent = '絶不調...がんばろう！';
-            container.classList.add('status-worst');
+            if (statusEl) statusEl.textContent = '絶不調...がんばろう！';
         } else if (streakType === 'fail' && streak >= 3) {
             emoji.innerHTML = '<img src="不調.png" alt="不調">';
-            status.textContent = '不調...少しずつ！';
-            container.classList.add('status-bad');
+            if (statusEl) statusEl.textContent = '不調...少しずつ！';
         } else {
             emoji.innerHTML = '<img src="普通.png" alt="普通">';
-            status.textContent = '普通です！';
-            container.classList.add('status-normal');
+            if (statusEl) statusEl.textContent = '普通です！';
         }
-
-        message.textContent = remaining || '体重を記録しよう！';
     },
 
     getLatestWeight() {
