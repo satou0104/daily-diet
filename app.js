@@ -295,6 +295,9 @@ const AppState = {
 
         // イルカの状態を更新
         this.updateDolphin();
+
+        // 保留色モードを更新
+        this.updateHoryuMode();
     },
 
     updateDolphin() {
@@ -348,12 +351,68 @@ const AppState = {
         }
     },
 
+    updateHelpPage() {
+        document.getElementById('helpPage1').classList.toggle('hidden', this.helpCurrentPage !== 1);
+        document.getElementById('helpPage2').classList.toggle('hidden', this.helpCurrentPage !== 2);
+        document.getElementById('helpPrev').classList.toggle('hidden', this.helpCurrentPage === 1);
+        document.getElementById('helpNext').classList.toggle('hidden', this.helpCurrentPage === 2);
+        document.getElementById('helpPageNum').textContent = `${this.helpCurrentPage} / 2`;
+    },
+
+    resetHelpPage() {
+        this.helpCurrentPage = 1;
+        this.updateHelpPage();
+    },
+
     updateDolphinVisibility() {
         const show = localStorage.getItem('showDolphin') !== 'false';
         const dolphin = document.getElementById('dolphinEmoji');
         const bubble = document.getElementById('dolphinBubble');
         if (dolphin) dolphin.style.display = show ? '' : 'none';
         if (bubble) bubble.style.display = show ? '' : 'none';
+    },
+
+    updateHoryuMode() {
+        const calendarScreen = document.getElementById('calendarScreen');
+        if (!calendarScreen) return;
+
+        // 既存のクラスを削除
+        calendarScreen.classList.remove('horyu-blue', 'horyu-green', 'horyu-purple', 'horyu-red', 'horyu-rainbow');
+
+        const enabled = localStorage.getItem('horyuMode') === 'true';
+        if (!enabled) return;
+
+        // 直近の連続成功日数を計算
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        let streak = 0;
+
+        for (let i = 0; i < 30; i++) {
+            const date = new Date(today);
+            date.setDate(today.getDate() - i);
+            const weight = this.getWeight(date);
+            const target = this.calculateDailyTarget(date);
+
+            if (!weight || target === null) continue;
+
+            if (weight <= target) {
+                streak++;
+            } else {
+                break;
+            }
+        }
+
+        if (streak >= 5) {
+            calendarScreen.classList.add('horyu-rainbow');
+        } else if (streak >= 4) {
+            calendarScreen.classList.add('horyu-red');
+        } else if (streak >= 3) {
+            calendarScreen.classList.add('horyu-purple');
+        } else if (streak >= 2) {
+            calendarScreen.classList.add('horyu-green');
+        } else if (streak >= 1) {
+            calendarScreen.classList.add('horyu-blue');
+        }
     },
 
     getLatestWeight() {
@@ -501,6 +560,18 @@ const AppState = {
         // 操作説明モーダルを閉じる
         document.getElementById('closeHelp').addEventListener('click', () => {
             document.getElementById('helpModal').classList.add('hidden');
+            this.resetHelpPage();
+        });
+
+        // ヘルプページ切り替え
+        this.helpCurrentPage = 1;
+        document.getElementById('helpNext').addEventListener('click', () => {
+            this.helpCurrentPage = 2;
+            this.updateHelpPage();
+        });
+        document.getElementById('helpPrev').addEventListener('click', () => {
+            this.helpCurrentPage = 1;
+            this.updateHelpPage();
         });
 
         // イルカ表示トグル
@@ -512,6 +583,17 @@ const AppState = {
         dolphinToggle.addEventListener('change', () => {
             localStorage.setItem('showDolphin', dolphinToggle.checked);
             this.updateDolphinVisibility();
+        });
+
+        // 保留色モードトグル
+        const horyuToggle = document.getElementById('horyuToggle');
+        const savedHoryu = localStorage.getItem('horyuMode');
+        if (savedHoryu === 'true') {
+            horyuToggle.checked = true;
+        }
+        horyuToggle.addEventListener('change', () => {
+            localStorage.setItem('horyuMode', horyuToggle.checked);
+            this.updateHoryuMode();
         });
 
         // モーダル背景クリックで閉じる

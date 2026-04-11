@@ -744,3 +744,96 @@ input[type="date"]:focus {
 .toggle-switch input:checked + .toggle-slider::before {
     transform: translateX(22px);
 }
+
+/* 保留色モード */
+.horyu-blue .calendar-header,
+.horyu-blue .chart-container,
+.horyu-blue .calendar-container {
+    background: repeating-linear-gradient(
+        -45deg,
+        white,
+        white 16px,
+        rgba(66, 133, 244, 0.15) 16px,
+        rgba(66, 133, 244, 0.15) 32px
+    );
+}
+
+.horyu-green .calendar-header,
+.horyu-green .chart-container,
+.horyu-green .calendar-container {
+    background: repeating-linear-gradient(
+        -45deg,
+        white,
+        white 16px,
+        rgba(76, 175, 80, 0.15) 16px,
+        rgba(76, 175, 80, 0.15) 32px
+    );
+}
+
+.horyu-purple .calendar-header,
+.horyu-purple .chart-container,
+.horyu-purple .calendar-container {
+    background: repeating-linear-gradient(
+        -45deg,
+        white,
+        white 16px,
+        rgba(156, 39, 176, 0.15) 16px,
+        rgba(156, 39, 176, 0.15) 32px
+    );
+}
+
+.horyu-red .calendar-header,
+.horyu-red .chart-container,
+.horyu-red .calendar-container {
+    background: repeating-linear-gradient(
+        -45deg,
+        white,
+        white 16px,
+        rgba(244, 67, 54, 0.15) 16px,
+        rgba(244, 67, 54, 0.15) 32px
+    );
+}
+
+.horyu-rainbow .calendar-header,
+.horyu-rainbow .chart-container,
+.horyu-rainbow .calendar-container {
+    background: repeating-linear-gradient(
+        -45deg,
+        rgba(244, 67, 54, 0.1) 0px,
+        rgba(255, 152, 0, 0.1) 16px,
+        rgba(255, 235, 59, 0.1) 32px,
+        rgba(76, 175, 80, 0.1) 48px,
+        rgba(33, 150, 243, 0.1) 64px,
+        rgba(156, 39, 176, 0.1) 80px,
+        rgba(244, 67, 54, 0.1) 96px
+    );
+}
+
+/* ヘルプページナビ */
+.help-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid #f0f0f0;
+}
+
+.help-nav-btn {
+    background: none;
+    border: none;
+    color: #667eea;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 5px 10px;
+}
+
+.help-page-num {
+    font-size: 13px;
+    color: #999;
+}
+
+.help-page.hidden {
+    display: none;
+}

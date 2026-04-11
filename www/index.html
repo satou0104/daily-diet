@@ -102,6 +102,13 @@
                             <span class="toggle-slider"></span>
                         </label>
                     </div>
+                    <div class="setting-toggle">
+                        <label class="toggle-label">保留色モード</label>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="horyuToggle">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
                 </div>
             </div>
         </div>
@@ -115,16 +122,38 @@
                 </div>
                 <div class="modal-body">
                     <div class="help-content">
-                        <p>日割りダイエットは、目標体重までの減量を日割りで管理するアプリです。</p>
-                        <br>
-                        <p><strong>カレンダーの色について：</strong></p>
-                        <ul>
-                            <li>🟦 <strong>青色</strong>：体重を入力して目標達成した日</li>
-                            <li>🟥 <strong>赤色</strong>：体重を入力したが目標未達成の日</li>
-                            <li>🟨 <strong>黄色</strong>：終了日</li>
-                        </ul>
-                        <br>
-                        <p>日付をタップして毎日の体重を記録しましょう！</p>
+                        <div id="helpPage1" class="help-page">
+                            <p>日割りダイエットは、目標体重までの減量を日割りで管理するアプリです。</p>
+                            <br>
+                            <p><strong>カレンダーの色について：</strong></p>
+                            <ul>
+                                <li>🟦 <strong>青色</strong>：体重を入力して目標達成した日</li>
+                                <li>🟥 <strong>赤色</strong>：体重を入力したが目標未達成の日</li>
+                                <li>🟨 <strong>黄色</strong>：終了日</li>
+                            </ul>
+                            <br>
+                            <p>日付をタップして毎日の体重を記録しましょう！</p>
+                        </div>
+                        <div id="helpPage2" class="help-page hidden">
+                            <p><strong>保留色モードについて：</strong></p>
+                            <br>
+                            <p>設定でONにすると、連続で目標達成した日数に応じて画面の背景に斜線模様が表示されます。</p>
+                            <br>
+                            <ul>
+                                <li>🔵 <strong>1日成功</strong>：青色</li>
+                                <li>🟢 <strong>2日連続成功</strong>：緑色</li>
+                                <li>🟣 <strong>3日連続成功</strong>：紫色</li>
+                                <li>🔴 <strong>4日連続成功</strong>：赤色</li>
+                                <li>🌈 <strong>5日連続成功</strong>：レインボー</li>
+                            </ul>
+                            <br>
+                            <p>連続達成を目指してモチベーションアップ！</p>
+                        </div>
+                        <div class="help-nav">
+                            <button id="helpPrev" class="help-nav-btn hidden">◀ 前へ</button>
+                            <span id="helpPageNum" class="help-page-num">1 / 2</span>
+                            <button id="helpNext" class="help-nav-btn">次へ ▶</button>
+                        </div>
                     </div>
                 </div>
             </div>
