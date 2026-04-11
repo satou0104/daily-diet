@@ -195,6 +195,14 @@ const AppState = {
             dailyGoalElement.textContent = '';
         }
 
+        // 終了日と目標体重をヘッダーに表示
+        const headerGoal = document.getElementById('headerGoal');
+        if (headerGoal && this.targetDate && this.targetWeight) {
+            const endDate = new Date(this.targetDate);
+            const endStr = `${endDate.getMonth()+1}/${endDate.getDate()}`;
+            headerGoal.textContent = `終了日 ${endStr} ／ 目標 ${this.targetWeight}kg`;
+        }
+
         const grid = document.getElementById('calendarGrid');
         grid.innerHTML = '';
 

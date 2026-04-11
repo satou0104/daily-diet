@@ -210,6 +210,14 @@ input[type="date"]:focus {
 .calendar-header h2 {
     font-size: 20px;
     color: #333;
+    margin: 0;
+}
+
+.month-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 8px;
     margin-bottom: 5px;
 }
 
@@ -218,6 +226,12 @@ input[type="date"]:focus {
     color: #667eea;
     font-weight: 600;
     margin: 0;
+}
+
+.header-goal {
+    font-size: 13px;
+    color: #999;
+    white-space: nowrap;
 }
 
 .nav-btn {
@@ -606,6 +620,12 @@ input[type="date"]:focus {
 .dolphin-message {
     font-size: 14px;
     color: #1976d2;
+}
+
+.dolphin-goal {
+    font-size: 11px;
+    color: #999;
+    margin-top: 3px;
 }
 
 .dolphin-container.status-great {
