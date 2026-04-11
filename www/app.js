@@ -333,22 +333,37 @@ const AppState = {
         }
 
         // 状態を決定
-        if (streakType === 'success' && streak >= 7) {
+        const comment = document.getElementById('dolphinComment');
+        const isHoryuMode = localStorage.getItem('horyuMode') === 'true';
+
+        if (streakType === 'success' && streak >= 5) {
             emoji.innerHTML = '<img src="絶好調.png" alt="絶好調">';
-            if (statusEl) statusEl.textContent = '絶好調です！✨';
+            if (comment) comment.textContent = isHoryuMode ? 'きゅいいいん！' : '絶好調！';
+        } else if (streakType === 'success' && streak >= 4) {
+            emoji.innerHTML = '<img src="好調.png" alt="好調">';
+            if (comment) comment.textContent = isHoryuMode ? '熱い！！' : '好調！';
         } else if (streakType === 'success' && streak >= 3) {
             emoji.innerHTML = '<img src="好調.png" alt="好調">';
-            if (statusEl) statusEl.textContent = '好調です！';
+            if (comment) comment.textContent = isHoryuMode ? 'ちょい熱' : '好調！';
+        } else if (streakType === 'success' && streak >= 2) {
+            emoji.innerHTML = '<img src="普通.png" alt="普通">';
+            if (comment) comment.textContent = isHoryuMode ? 'ワンチャン' : 'これから！';
+        } else if (streakType === 'success' && streak >= 1) {
+            emoji.innerHTML = '<img src="普通.png" alt="普通">';
+            if (comment) comment.textContent = isHoryuMode ? '期待値低い' : 'これから！';
         } else if (streakType === 'fail' && streak >= 7) {
             emoji.innerHTML = '<img src="絶不調.png" alt="絶不調">';
-            if (statusEl) statusEl.textContent = '絶不調...がんばろう！';
+            if (comment) comment.textContent = 'やる気ある？';
         } else if (streakType === 'fail' && streak >= 3) {
             emoji.innerHTML = '<img src="不調.png" alt="不調">';
-            if (statusEl) statusEl.textContent = '不調...少しずつ！';
+            if (comment) comment.textContent = 'がんばって！';
         } else {
             emoji.innerHTML = '<img src="普通.png" alt="普通">';
-            if (statusEl) statusEl.textContent = '普通です！';
+            if (comment) comment.textContent = 'これから！';
         }
+
+        // イルカ非表示時はコメントも非表示
+        this.updateDolphinVisibility();
     },
 
     updateHelpPage() {
@@ -366,10 +381,10 @@ const AppState = {
 
     updateDolphinVisibility() {
         const show = localStorage.getItem('showDolphin') !== 'false';
-        const dolphin = document.getElementById('dolphinEmoji');
-        const bubble = document.getElementById('dolphinBubble');
-        if (dolphin) dolphin.style.display = show ? '' : 'none';
-        if (bubble) bubble.style.display = show ? '' : 'none';
+        const dolphinEl = document.getElementById('dolphinEmoji');
+        const commentEl = document.getElementById('dolphinComment');
+        if (dolphinEl) dolphinEl.style.display = show ? '' : 'none';
+        if (commentEl) commentEl.style.display = show ? '' : 'none';
     },
 
     updateHoryuMode() {
@@ -594,6 +609,7 @@ const AppState = {
         horyuToggle.addEventListener('change', () => {
             localStorage.setItem('horyuMode', horyuToggle.checked);
             this.updateHoryuMode();
+            this.updateDolphin();
         });
 
         // モーダル背景クリックで閉じる

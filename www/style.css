@@ -837,3 +837,11 @@ input[type="date"]:focus {
 .help-page.hidden {
     display: none;
 }
+
+/* イルカコメント */
+.dolphin-comment {
+    font-size: 14px;
+    font-weight: 600;
+    color: #64b5f6;
+    opacity: 0.6;
+}
