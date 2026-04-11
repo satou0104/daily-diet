@@ -298,6 +298,7 @@ const AppState = {
     },
 
     updateDolphin() {
+        this.updateDolphinVisibility();
         const emoji = document.getElementById('dolphinEmoji');
         const statusEl = document.getElementById('dolphinStatus');
         if (!emoji) return;
@@ -345,6 +346,14 @@ const AppState = {
             emoji.innerHTML = '<img src="普通.png" alt="普通">';
             if (statusEl) statusEl.textContent = '普通です！';
         }
+    },
+
+    updateDolphinVisibility() {
+        const show = localStorage.getItem('showDolphin') !== 'false';
+        const dolphin = document.getElementById('dolphinEmoji');
+        const bubble = document.getElementById('dolphinBubble');
+        if (dolphin) dolphin.style.display = show ? '' : 'none';
+        if (bubble) bubble.style.display = show ? '' : 'none';
     },
 
     getLatestWeight() {
@@ -492,6 +501,17 @@ const AppState = {
         // 操作説明モーダルを閉じる
         document.getElementById('closeHelp').addEventListener('click', () => {
             document.getElementById('helpModal').classList.add('hidden');
+        });
+
+        // イルカ表示トグル
+        const dolphinToggle = document.getElementById('dolphinToggle');
+        const savedDolphin = localStorage.getItem('showDolphin');
+        if (savedDolphin === 'false') {
+            dolphinToggle.checked = false;
+        }
+        dolphinToggle.addEventListener('change', () => {
+            localStorage.setItem('showDolphin', dolphinToggle.checked);
+            this.updateDolphinVisibility();
         });
 
         // モーダル背景クリックで閉じる
