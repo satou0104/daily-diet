@@ -284,6 +284,90 @@ const AppState = {
 
         // グラフを描画
         setTimeout(() => this.renderChart(this.chartDays || 7), 50);
+
+        // イルカの状態を更新
+        this.updateDolphin();
+    },
+
+    updateDolphin() {
+        const container = document.querySelector('.dolphin-container');
+        const emoji = document.getElementById('dolphinEmoji');
+        const status = document.getElementById('dolphinStatus');
+        const message = document.getElementById('dolphinMessage');
+        if (!container || !emoji || !status || !message) return;
+
+        // 直近の連続達成/失敗日数を計算
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        let streak = 0;
+        let streakType = null;
+
+        for (let i = 0; i < 30; i++) {
+            const date = new Date(today);
+            date.setDate(today.getDate() - i);
+            const weight = this.getWeight(date);
+            const target = this.calculateDailyTarget(date);
+
+            if (!weight || target === null) continue;
+
+            const isSuccess = weight <= target;
+
+            if (streakType === null) {
+                streakType = isSuccess ? 'success' : 'fail';
+                streak = 1;
+            } else if ((isSuccess && streakType === 'success') || (!isSuccess && streakType === 'fail')) {
+                streak++;
+            } else {
+                break;
+            }
+        }
+
+        // 目標までの残り体重
+        let remaining = '';
+        if (this.targetWeight && this.currentWeight) {
+            const lastWeight = this.getLatestWeight() || this.currentWeight;
+            const diff = (lastWeight - this.targetWeight).toFixed(1);
+            remaining = `目標まであと -${diff}kg`;
+        }
+
+        // SVGイルカ生成関数
+        // PNG画像でイルカ表示
+        container.className = 'dolphin-container';
+        if (streakType === 'success' && streak >= 7) {
+            emoji.innerHTML = '<img src="絶好調.png" alt="絶好調">';
+            status.textContent = '絶好調です！';
+            container.classList.add('status-great');
+        } else if (streakType === 'success' && streak >= 3) {
+            emoji.innerHTML = '<img src="好調.png" alt="好調">';
+            status.textContent = '好調です！';
+            container.classList.add('status-good');
+        } else if (streakType === 'fail' && streak >= 7) {
+            emoji.innerHTML = '<img src="絶不調.png" alt="絶不調">';
+            status.textContent = '絶不調...がんばろう！';
+            container.classList.add('status-worst');
+        } else if (streakType === 'fail' && streak >= 3) {
+            emoji.innerHTML = '<img src="不調.png" alt="不調">';
+            status.textContent = '不調...少しずつ！';
+            container.classList.add('status-bad');
+        } else {
+            emoji.innerHTML = '<img src="普通.png" alt="普通">';
+            status.textContent = '普通です！';
+            container.classList.add('status-normal');
+        }
+
+        message.textContent = remaining || '体重を記録しよう！';
+    },
+
+    getLatestWeight() {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        for (let i = 0; i < 30; i++) {
+            const date = new Date(today);
+            date.setDate(today.getDate() - i);
+            const weight = this.getWeight(date);
+            if (weight) return weight;
+        }
+        return null;
     },
 
     openWeightModal(date) {
