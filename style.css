@@ -210,7 +210,7 @@ input[type="date"]:focus {
 .calendar-header h2 {
     font-size: 20px;
     color: #333;
-    margin: 0;
+    margin-bottom: 5px;
 }
 
 .month-row {
@@ -517,8 +517,8 @@ input[type="date"]:focus {
 
 .chart-dolphin {
     position: absolute;
-    width: 400px;
-    height: 400px;
+    width: 500px;
+    height: 500px;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
