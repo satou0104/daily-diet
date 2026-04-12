@@ -4,11 +4,6 @@
 <dict>
 	<key>GADApplicationIdentifier</key>
 	<string>ca-app-pub-8707369701475326~3594842292</string>
-	<key>UIBackgroundModes</key>
-	<array>
-		<string>fetch</string>
-		<string>remote-notification</string>
-	</array>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>ja</string>
 	<key>CFBundleDisplayName</key>
