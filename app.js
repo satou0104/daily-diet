@@ -369,21 +369,21 @@ const AppState = {
     async scheduleReminder(timeStr) {
         if (!window.Capacitor || !window.Capacitor.isNativePlatform()) return;
         try {
-            const { LocalNotifications } = Capacitor.Plugins;
-            if (!LocalNotifications) return;
+            const LocalNotifications = Capacitor.Plugins.LocalNotifications;
+            if (!LocalNotifications) {
+                console.error('LocalNotifications plugin not found');
+                return;
+            }
 
             const perm = await LocalNotifications.requestPermissions();
-            if (perm.display !== 'granted') return;
+            if (perm.display !== 'granted') {
+                alert('通知を許可してください。設定アプリから通知を有効にできます。');
+                return;
+            }
 
             await LocalNotifications.cancel({ notifications: [{ id: 1 }] });
 
             const [hours, minutes] = timeStr.split(':').map(Number);
-            const now = new Date();
-            const scheduled = new Date();
-            scheduled.setHours(hours, minutes, 0, 0);
-            if (scheduled <= now) {
-                scheduled.setDate(scheduled.getDate() + 1);
-            }
 
             await LocalNotifications.schedule({
                 notifications: [{
@@ -406,7 +406,7 @@ const AppState = {
     async cancelReminder() {
         if (!window.Capacitor || !window.Capacitor.isNativePlatform()) return;
         try {
-            const { LocalNotifications } = Capacitor.Plugins;
+            const LocalNotifications = Capacitor.Plugins.LocalNotifications;
             if (!LocalNotifications) return;
             await LocalNotifications.cancel({ notifications: [{ id: 1 }] });
         } catch (e) {
