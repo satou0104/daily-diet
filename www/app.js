@@ -366,6 +366,54 @@ const AppState = {
         this.updateDolphinVisibility();
     },
 
+    async scheduleReminder(timeStr) {
+        if (!window.Capacitor || !window.Capacitor.isNativePlatform()) return;
+        try {
+            const { LocalNotifications } = Capacitor.Plugins;
+            if (!LocalNotifications) return;
+
+            const perm = await LocalNotifications.requestPermissions();
+            if (perm.display !== 'granted') return;
+
+            await LocalNotifications.cancel({ notifications: [{ id: 1 }] });
+
+            const [hours, minutes] = timeStr.split(':').map(Number);
+            const now = new Date();
+            const scheduled = new Date();
+            scheduled.setHours(hours, minutes, 0, 0);
+            if (scheduled <= now) {
+                scheduled.setDate(scheduled.getDate() + 1);
+            }
+
+            await LocalNotifications.schedule({
+                notifications: [{
+                    id: 1,
+                    title: '日割りダイエット',
+                    body: '今日の体重を記録しましょう！🐬',
+                    schedule: {
+                        on: { hour: hours, minute: minutes },
+                        every: 'day',
+                        allowWhileIdle: true,
+                    },
+                    sound: 'default',
+                }]
+            });
+        } catch (e) {
+            console.error('Reminder error:', e);
+        }
+    },
+
+    async cancelReminder() {
+        if (!window.Capacitor || !window.Capacitor.isNativePlatform()) return;
+        try {
+            const { LocalNotifications } = Capacitor.Plugins;
+            if (!LocalNotifications) return;
+            await LocalNotifications.cancel({ notifications: [{ id: 1 }] });
+        } catch (e) {
+            console.error('Cancel reminder error:', e);
+        }
+    },
+
     updateHelpPage() {
         document.getElementById('helpPage1').classList.toggle('hidden', this.helpCurrentPage !== 1);
         document.getElementById('helpPage2').classList.toggle('hidden', this.helpCurrentPage !== 2);
@@ -610,6 +658,34 @@ const AppState = {
             localStorage.setItem('horyuMode', horyuToggle.checked);
             this.updateHoryuMode();
             this.updateDolphin();
+        });
+
+        // リマインダートグル
+        const reminderToggle = document.getElementById('reminderToggle');
+        const reminderTimeGroup = document.getElementById('reminderTimeGroup');
+        const reminderTime = document.getElementById('reminderTime');
+        const savedReminder = localStorage.getItem('reminderEnabled');
+        const savedTime = localStorage.getItem('reminderTime') || '20:00';
+        reminderTime.value = savedTime;
+        if (savedReminder === 'true') {
+            reminderToggle.checked = true;
+            reminderTimeGroup.classList.remove('hidden');
+        }
+        reminderToggle.addEventListener('change', () => {
+            localStorage.setItem('reminderEnabled', reminderToggle.checked);
+            if (reminderToggle.checked) {
+                reminderTimeGroup.classList.remove('hidden');
+                this.scheduleReminder(reminderTime.value);
+            } else {
+                reminderTimeGroup.classList.add('hidden');
+                this.cancelReminder();
+            }
+        });
+        reminderTime.addEventListener('change', () => {
+            localStorage.setItem('reminderTime', reminderTime.value);
+            if (reminderToggle.checked) {
+                this.scheduleReminder(reminderTime.value);
+            }
         });
 
         // モーダル背景クリックで閉じる

@@ -845,3 +845,22 @@ input[type="date"]:focus {
     color: #64b5f6;
     opacity: 0.6;
 }
+
+/* リマインダー時間設定 */
+.setting-time {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+}
+
+.time-input {
+    width: 120px;
+    height: 40px;
+    padding: 5px 10px;
+    font-size: 16px;
+    border: 2px solid #f0f0f0;
+    border-radius: 12px;
+    background: #fafafa;
+    text-align: center;
+}
