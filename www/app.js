@@ -417,9 +417,10 @@ const AppState = {
     updateHelpPage() {
         document.getElementById('helpPage1').classList.toggle('hidden', this.helpCurrentPage !== 1);
         document.getElementById('helpPage2').classList.toggle('hidden', this.helpCurrentPage !== 2);
+        document.getElementById('helpPage3').classList.toggle('hidden', this.helpCurrentPage !== 3);
         document.getElementById('helpPrev').classList.toggle('hidden', this.helpCurrentPage === 1);
-        document.getElementById('helpNext').classList.toggle('hidden', this.helpCurrentPage === 2);
-        document.getElementById('helpPageNum').textContent = `${this.helpCurrentPage} / 2`;
+        document.getElementById('helpNext').classList.toggle('hidden', this.helpCurrentPage === 3);
+        document.getElementById('helpPageNum').textContent = `${this.helpCurrentPage} / 3`;
     },
 
     resetHelpPage() {
@@ -629,11 +630,11 @@ const AppState = {
         // ヘルプページ切り替え
         this.helpCurrentPage = 1;
         document.getElementById('helpNext').addEventListener('click', () => {
-            this.helpCurrentPage = 2;
+            if (this.helpCurrentPage < 3) this.helpCurrentPage++;
             this.updateHelpPage();
         });
         document.getElementById('helpPrev').addEventListener('click', () => {
-            this.helpCurrentPage = 1;
+            if (this.helpCurrentPage > 1) this.helpCurrentPage--;
             this.updateHelpPage();
         });
 
