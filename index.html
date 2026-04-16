@@ -18,6 +18,14 @@
                     </div>
                 
                     <div class="input-group">
+                        <label>身長</label>
+                        <div class="input-wrapper">
+                            <input type="number" id="heightInput" step="0.1" placeholder="170.0" max="300" min="50">
+                            <span class="unit">cm</span>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
                         <label>現在体重</label>
                         <div class="input-wrapper">
                             <input type="number" id="currentWeight" step="0.01" placeholder="60.0" max="999.99" min="0">
@@ -83,6 +91,19 @@
 
             <div class="calendar-container">
                 <div id="calendarGrid" class="calendar-grid"></div>
+            </div>
+
+            <!-- BMI表示 -->
+            <div class="bmi-container">
+                <div class="bmi-header">BMI</div>
+                <div id="bmiValue" class="bmi-value">--</div>
+                <div id="bmiStatus" class="bmi-status"></div>
+            </div>
+
+            <!-- 免責事項フッター -->
+            <div class="disclaimer-footer">
+                <p>本アプリは体重管理の補助ツールであり、医療アドバイスを提供するものではありません。健康的な減量ペースは週0.5〜1kg程度です。体重管理を行う際は医師にご相談ください。</p>
+                <p><a href="https://kennet.mhlw.go.jp/home">参考：厚生労働省 健康日本21</a></p>
             </div>
         </div>
 

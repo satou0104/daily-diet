@@ -298,6 +298,45 @@ const AppState = {
 
         // 保留色モードを更新
         this.updateHoryuMode();
+
+        // BMIを更新
+        this.updateBMI();
+    },
+
+    updateBMI() {
+        const bmiValue = document.getElementById('bmiValue');
+        const bmiStatus = document.getElementById('bmiStatus');
+        if (!bmiValue || !bmiStatus) return;
+
+        const height = parseFloat(localStorage.getItem('userHeight'));
+        const latestWeight = this.getLatestWeight() || this.currentWeight;
+
+        if (!height || !latestWeight) {
+            bmiValue.textContent = '--';
+            bmiStatus.textContent = '設定で身長を入力してください';
+            return;
+        }
+
+        const heightM = height / 100;
+        const bmi = (latestWeight / (heightM * heightM)).toFixed(1);
+        const idealWeight = (heightM * heightM * 22).toFixed(1);
+        bmiValue.textContent = bmi;
+
+        let statusText = '';
+        if (bmi < 18.5) {
+            statusText = '低体重';
+            bmiStatus.style.color = '#64b5f6';
+        } else if (bmi < 25) {
+            statusText = '普通体重';
+            bmiStatus.style.color = '#81c784';
+        } else if (bmi < 30) {
+            statusText = '肥満（1度）';
+            bmiStatus.style.color = '#ffb74d';
+        } else {
+            statusText = '肥満（2度以上）';
+            bmiStatus.style.color = '#e57373';
+        }
+        bmiStatus.textContent = `${statusText}（適正 ${idealWeight}kg）`;
     },
 
     updateDolphin() {
@@ -604,6 +643,15 @@ const AppState = {
             document.getElementById('settingsModal').classList.add('hidden');
         });
 
+        // 身長入力
+        const heightInput = document.getElementById('heightInput');
+        const savedHeight = localStorage.getItem('userHeight');
+        if (savedHeight) heightInput.value = savedHeight;
+        heightInput.addEventListener('change', () => {
+            localStorage.setItem('userHeight', heightInput.value);
+            this.updateBMI();
+        });
+
         // 目標体重設定ボタン
         document.getElementById('goToTargetSettings').addEventListener('click', () => {
             document.getElementById('settingsModal').classList.add('hidden');
@@ -612,6 +660,8 @@ const AppState = {
             document.getElementById('targetWeight').value = this.targetWeight;
             document.getElementById('startDate').value = this.startDate;
             document.getElementById('targetDate').value = this.targetDate;
+            const h = localStorage.getItem('userHeight');
+            if (h) document.getElementById('heightInput').value = h;
             this.render();
         });
 
