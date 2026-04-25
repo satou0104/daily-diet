@@ -1,6 +1,6 @@
 {
   "name": "daily-diet",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "日割りダイエット - 体重管理アプリ",
   "main": "index.js",
   "scripts": {
