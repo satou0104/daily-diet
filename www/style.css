@@ -745,7 +745,7 @@ input[type="date"]:focus {
     transform: translateX(22px);
 }
 
-/* 保留色モード */
+/* カラフルモード */
 .horyu-blue .calendar-header,
 .horyu-blue .chart-container,
 .horyu-blue .calendar-container {

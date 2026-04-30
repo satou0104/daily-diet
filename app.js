@@ -296,7 +296,7 @@ const AppState = {
         // イルカの状態を更新
         this.updateDolphin();
 
-        // 保留色モードを更新
+        // カラフルモードを更新
         this.updateHoryuMode();
 
         // BMIを更新
@@ -699,7 +699,7 @@ const AppState = {
             this.updateDolphinVisibility();
         });
 
-        // 保留色モードトグル
+        // カラフルモードトグル
         const horyuToggle = document.getElementById('horyuToggle');
         const savedHoryu = localStorage.getItem('horyuMode');
         if (savedHoryu === 'true') {
