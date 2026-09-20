@@ -63,6 +63,9 @@ const AppState = {
         this.weightRecords[key] = weight;
         this.saveToStorage();
         this.renderCalendar();
+        
+        // 評価リクエストをチェック
+        this.checkAndRequestReview();
     },
 
     deleteWeight(date) {
@@ -1002,6 +1005,49 @@ const AppState = {
                     ctx.fill();
                 }
             });
+        }
+    },
+
+    async checkAndRequestReview() {
+        // 既に評価リクエストを表示したかチェック
+        const hasRequestedReview = localStorage.getItem('hasRequestedReview');
+        if (hasRequestedReview === 'true') {
+            return;
+        }
+
+        // 入力日数をカウント
+        const recordedDays = Object.keys(this.weightRecords).length;
+        
+        // 3日以上入力されている場合
+        if (recordedDays >= 3) {
+            // フラグを立てる（重複表示を防ぐ）
+            localStorage.setItem('hasRequestedReview', 'true');
+            
+            // ネイティブアプリの場合
+            if (window.Capacitor && window.Capacitor.isNativePlatform()) {
+                try {
+                    // カスタムプラグインを使用してiOSのStoreKit評価ダイアログを表示
+                    const { ReviewPlugin } = Capacitor.Plugins;
+                    if (ReviewPlugin) {
+                        await ReviewPlugin.requestReview();
+                        console.log('Review dialog shown');
+                    }
+                } catch (e) {
+                    console.error('Review request error:', e);
+                    // エラーの場合でもフラグは立てたまま（ユーザー体験を損なわないため）
+                }
+            }
+        }
+    },
+
+    showCustomReviewDialog() {
+        const shouldShow = confirm('アプリを気に入っていただけましたか？\nApp Storeで評価していただけると嬉しいです！🐬');
+        localStorage.setItem('hasRequestedReview', 'true');
+        
+        if (shouldShow && window.Capacitor && window.Capacitor.isNativePlatform()) {
+            // App Storeを開く（実際のアプリIDに置き換える必要があります）
+            const appId = 'YOUR_APP_ID'; // 実際のApp Store IDに置き換えてください
+            window.open(`itms-apps://itunes.apple.com/app/id${appId}?action=write-review`, '_system');
         }
     },
 
