@@ -1011,7 +1011,12 @@ const AppState = {
     async checkAndRequestReview() {
         // 既に評価リクエストを表示したかチェック
         const hasRequestedReview = localStorage.getItem('hasRequestedReview');
+        console.log('checkAndRequestReview called');
+        console.log('hasRequestedReview:', hasRequestedReview);
+        console.log('recordedDays:', Object.keys(this.weightRecords).length);
+        
         if (hasRequestedReview === 'true') {
+            console.log('Review already requested, skipping');
             return;
         }
 
@@ -1020,23 +1025,32 @@ const AppState = {
         
         // 3日以上入力されている場合
         if (recordedDays >= 3) {
+            console.log('3+ days recorded, showing review dialog');
             // フラグを立てる（重複表示を防ぐ）
             localStorage.setItem('hasRequestedReview', 'true');
             
             // ネイティブアプリの場合
             if (window.Capacitor && window.Capacitor.isNativePlatform()) {
+                console.log('Native platform detected');
                 try {
-                    // カスタムプラグインを使用してiOSのStoreKit評価ダイアログを表示
-                    const { ReviewPlugin } = Capacitor.Plugins;
-                    if (ReviewPlugin) {
-                        await ReviewPlugin.requestReview();
+                    // capacitor-rate-appプラグインを使用
+                    const { RateApp } = Capacitor.Plugins;
+                    console.log('RateApp:', RateApp);
+                    if (RateApp) {
+                        await RateApp.requestReview();
                         console.log('Review dialog shown');
+                    } else {
+                        console.error('RateApp plugin not found');
                     }
                 } catch (e) {
                     console.error('Review request error:', e);
                     // エラーの場合でもフラグは立てたまま（ユーザー体験を損なわないため）
                 }
+            } else {
+                console.log('Not a native platform');
             }
+        } else {
+            console.log('Less than 3 days recorded, not showing review');
         }
     },
 
